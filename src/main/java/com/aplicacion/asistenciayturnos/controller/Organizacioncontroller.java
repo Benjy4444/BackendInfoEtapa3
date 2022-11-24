@@ -9,6 +9,7 @@ import java.util.List;
 
 //Indiciamos que es un controlador rest
 @RestController
+@ControllerAdvice
 @RequestMapping(value = "/api/v1") //esta sera la raiz de la url, es decir http://127.0.0.1:8080/api/v1
 public class Organizacioncontroller {
 
@@ -55,7 +56,7 @@ public class Organizacioncontroller {
     //V2
     @RequestMapping(value = "/organizaciones", method = RequestMethod.POST)
     public Organizacion addOrganizacion(@RequestBody Organizacion organizacion) {
-        organizacion.setId(0L);
+        organizacion.setIdorganizacion(0L);
 
         //Este método guardará al usuario enviado
         organizacionService.save(organizacion);
@@ -87,7 +88,7 @@ public class Organizacioncontroller {
     //@DeleteMapping("/organizaciones/{organizacionId}")
     //V2
     @RequestMapping(value = "organizaciones/{organizacionId}", method = RequestMethod.DELETE)
-    public String deteteOrganizacion(@PathVariable Long organizacionId) {
+    public String deleteOrganizacion(@PathVariable Long organizacionId) {
 
         Organizacion organizacion = organizacionService.findById(organizacionId);
 
