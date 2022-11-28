@@ -29,6 +29,18 @@ public class OrganizacionServiceImp implements OrganizacionService {
     }
 
     @Override
+    public Organizacion findByCuit(Long cuit) {
+        List<Organizacion> listOrganizaciones= organizacionDao.findByCuit(cuit);
+        return (Organizacion) listOrganizaciones;
+    }
+
+    @Override
+    public Organizacion findByNombre(String nombre) {
+        Organizacion organizacion = organizacionDao.findByNombre(nombre);
+        return organizacion;
+    }
+
+    @Override
     public void save(Organizacion organizacion) {
         organizacionDao.save(organizacion);
     }

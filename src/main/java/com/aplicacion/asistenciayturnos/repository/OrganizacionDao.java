@@ -7,13 +7,18 @@ import java.util.List;
 
 @Transactional
 public interface OrganizacionDao {
-    public List<Organizacion> findAll();
+    List<Organizacion> findAll();
 
-    public Organizacion findById(Long id);
+    Organizacion findById(Long id);
 
-    public void save(Organizacion organizacion);
+    List<Organizacion> findByCuit(Long cuit);
 
-    public void modify(Organizacion organizacion);
+    Organizacion findByNombre(String nombre);
 
-    public void deleteById(Long id);
+    void save(Organizacion organizacion);
+
+    void modify(Organizacion organizacion);
+
+    void deleteById(Long id);
+
 }

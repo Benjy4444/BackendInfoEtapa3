@@ -1,14 +1,11 @@
 package com.aplicacion.asistenciayturnos.entity;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.*;
 
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 
@@ -57,7 +54,7 @@ public class Organizacion /* implements Serializable */ {
     /* Reemplazado por la anotación arriba de la clase @ToString
     @Override
     public String toString() {
-        return "User [Id = " + idorganizacion + ", CUIT = " + cuit + ", Nombre = " + nombre + ", Dirección = " + direccion
+        return "Organización [Id = " + idorganizacion + ", CUIT = " + cuit + ", Nombre = " + nombre + ", Dirección = " + direccion
                 + ", Teléfono = " + telefono + ", Correo = " + correo + ", Alta = " + alta
                 + ", Activo = " + activo + ", Clave = " + clave +  "]";
     } */

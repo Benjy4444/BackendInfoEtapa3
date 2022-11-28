@@ -9,7 +9,6 @@ import javax.transaction.Transactional;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -40,6 +39,36 @@ public class OrganizacionDaoImp implements OrganizacionDao{
         Session currentSession = entityManager.unwrap(Session.class);
 
         Organizacion organizacion = currentSession.get(Organizacion.class, id);
+
+        //return entityManager.find(Organizacion.class, id);
+
+        return organizacion;
+    }
+
+    @Override
+    public List<Organizacion> findByCuit(Long cuit) {
+
+        Session currentSession = entityManager.unwrap(Session.class);
+
+        //Organizacion organizacion = currentSession.get(Organizacion.class, cuit);
+
+        //return entityManager.find(Organizacion.class, id);
+
+        Query<Organizacion> theQuery = currentSession.createQuery("from Organizacion where elcuit like: cuitbuscado", Organizacion.class);
+        //query.setParameter("theName", "%" + theSearchName.toLowerCase() + "%");
+        theQuery.setParameter( "cuitbuscado", "%" + cuit + "%");
+        //"SELECT * FROM TblPerson" + "WHERE name like :vname and id > :vid" , Person.class ).setParameter( "vname", "J%" ).setParameter( "vid", 5 ).list();
+        List<Organizacion> organizaciones = theQuery.getResultList();
+
+        return organizaciones;
+    }
+
+    @Override
+    public Organizacion findByNombre(String nombre) {
+
+        Session currentSession = entityManager.unwrap(Session.class);
+
+        Organizacion organizacion = currentSession.get(Organizacion.class, nombre);
 
         //return entityManager.find(Organizacion.class, id);
 

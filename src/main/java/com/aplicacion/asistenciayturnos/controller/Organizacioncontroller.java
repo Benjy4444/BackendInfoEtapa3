@@ -36,7 +36,7 @@ public class Organizacioncontroller {
     //V1
     //@GetMapping("/organizaciones/{organizacionId}")
     //V2
-    @RequestMapping(value = "organizaciones/{organizacionId}", method = RequestMethod.GET)
+    @RequestMapping(value = "organizaciones/id/{organizacionId}", method = RequestMethod.GET)
     public Organizacion getOrganizacion(@PathVariable Long organizacionId){
         Organizacion organizacion = organizacionService.findById(organizacionId);
 
@@ -46,6 +46,31 @@ public class Organizacioncontroller {
         //retornará al usuario con id pasado en la url
         return organizacion;
     }
+
+    /*Esta parte de búsqueda por cuit y nombre no funca... todavía... hay que revisar el tema de Querys en el ...DaoImp...
+
+    @RequestMapping(value = "organizaciones/cuit/{organizacionCuit}", method = RequestMethod.GET)
+    public Organizacion getOrganizacionCuit(@PathVariable Long organizacionCuit){
+        Organizacion organizacion = organizacionService.findByCuit(organizacionCuit);
+
+        if(organizacion == null) {
+            throw new RuntimeException("CUIT de organizacion no encontrado -"+organizacionCuit);
+        }
+        //retornará al usuario con cuit pasado en la url
+        return organizacion;
+    }
+
+    @RequestMapping(value = "organizaciones/nombre/{organizacionNombre}", method = RequestMethod.GET)
+    public Organizacion getOrganizacionNombre(@PathVariable String organizacionNombre){
+        Organizacion organizacion = organizacionService.findByNombre(organizacionNombre);
+
+        if(organizacion == null) {
+            throw new RuntimeException("Nombre de organizacion no encontrado -"+organizacionNombre);
+        }
+        //retornará al usuario con nombre pasado en la url
+        return organizacion;
+    }
+    */
 
     /*Este método se hará cuando por una petición POST (como indica la anotación) se llame a la url
     http://127.0.0.1:8080/api/v1/organizaciones/

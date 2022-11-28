@@ -1,7 +1,6 @@
 package com.aplicacion.asistenciayturnos.repository;
 
 import com.aplicacion.asistenciayturnos.entity.Evento;
-import com.aplicacion.asistenciayturnos.entity.Organizacion;
 
 import javax.transaction.Transactional;
 import java.util.List;

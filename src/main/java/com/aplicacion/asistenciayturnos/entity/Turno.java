@@ -1,5 +1,6 @@
 package com.aplicacion.asistenciayturnos.entity;
 
+import java.sql.Time;
 import java.util.Date;
 
 import javax.persistence.*;
@@ -15,33 +16,33 @@ import lombok.*;
 @ToString
 
 //La siguiente anotacion llama a la base de datos correspondiente
-@Table(name="evento")
-public class Evento /* implements Serializable */ {
+@Table(name="turno")
+public class Turno /* implements Serializable */ {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Getter @Setter @Column(name="idturno")
+    private Long idturno;
+
     @Getter @Setter @Column(name="idevento")
     private Long idevento;
 
+    @Getter @Setter @Column(name="idusuario")
+    private Long idusuario;
 
-    //@Getter @Setter @Column(name="idorganizacion")
-    //private Long idorganizacion;
-    //@OneToMany(mappedBy = "organizacion", cascade = CascadeType.ALL, orphanRemoval = true)
-    //@JoinColumn(name = "idorganizacion", nullable = false)
-    //private List<Organizacion> organizacion;
+    @Getter @Setter @Column(name="codigo")
+    private String codigo;
 
     @Getter @Setter @Column(name="fecha")
     private Date fecha;
 
-    @Getter @Setter @Column(name="ubicacion")
-    private String ubicacion;
+    @Getter @Setter @Column(name="hora")
+    private Time hora;
 
     @Getter @Setter @Column(name="activo")
     private Boolean activo;
 
-    @Getter @Setter @Column(name="tipo")
-    private Boolean tipo;
-
+    /*
     @ManyToOne
     @JoinColumn(name = "idorganizacion")
     //@Column(name="idorganizacion")
@@ -56,13 +57,14 @@ public class Evento /* implements Serializable */ {
     public void setOrganizacion(Organizacion organizacion) {
         this.organizacion = organizacion;
     }
+    */
     ///----------------------------------------------
 
     /* Reemplazado por la anotación arriba de la clase @ToString
     @Override
     public String toString() {
-        return "Evento [Id = " + idevento + ", Organizacion = " + organizacion.getId() + ", Fecha = " + fecha + ", Ubicación = " + ubicacion
-                + ", Activo = " + activo + ", Tipo = " + tipo +  "]";
+        return "Turno [Id = " + idturno + ", Evento = " + idevento + ", Usuario = " + idusuario + ", Código = " + codigo + ", Fecha = " + fecha
+                + ", Hora = " + hora + ", Activo = " + activo +  "]";
     } */
 
 }
