@@ -24,6 +24,8 @@ public class Evento /* implements Serializable */ {
     @Getter @Setter @Column(name="idevento")
     private Long idevento;
 
+    @Getter @Setter @Column(name="nombre")
+    private String nombre;
 
     //@Getter @Setter @Column(name="idorganizacion")
     //private Long idorganizacion;
