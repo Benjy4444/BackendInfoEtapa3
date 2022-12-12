@@ -1,5 +1,6 @@
 package com.aplicacion.asistenciayturnos.service;
 
+import com.aplicacion.asistenciayturnos.entity.Turno;
 import com.aplicacion.asistenciayturnos.entity.Usuario;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -7,14 +8,16 @@ import java.util.List;
 
 @Transactional
 public interface UsuarioService {
+    Usuario create(Usuario usuario);
+
+    Usuario update(Usuario usuario);
+
     List<Usuario> findAll();
 
     Usuario findById(Long usuarioId);
 
-    void save(Usuario usuario);
+    void delete(Long usuarioId);
 
-    void deleteById(Long usuarioId);
-
-    void modify(Usuario usuario);
+    Usuario findByDniOrApellido(Long usuarioDni, String usuarioApellido);
 
 }

@@ -1,9 +1,11 @@
 package com.aplicacion.asistenciayturnos.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.aplicacion.asistenciayturnos.entity.Evento;
 import com.aplicacion.asistenciayturnos.repository.EventoDao;
+import com.aplicacion.asistenciayturnos.repository.OrganizacionDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,27 +20,29 @@ public class EventoServiceImp implements EventoService {
     private EventoDao eventoDao;
 
     @Override
+    public Evento create(Evento evento) {
+        return eventoDao.save(evento);
+    }
+
+    @Override
+    public Evento update(Evento evento) {
+        return eventoDao.save(evento);
+    }
+
+    @Override
     public List<Evento> findAll() {
-        List<Evento> listEventos= eventoDao.findAll();
-        return listEventos;
+        return eventoDao.findAll();
     }
 
     @Override
-    public Evento findById(Long id) {
-        Evento evento = eventoDao.findById(id);
-        return evento;
+    public Evento findById(Long eventoId) {
+        Optional<Evento> eventoOptional = eventoDao.findById(eventoId);
+        return eventoOptional.orElse(null);
     }
 
     @Override
-    public void save(Evento evento) {eventoDao.save(evento);
-    }
-
-    @Override
-    public void modify(Evento evento) {eventoDao.modify(evento);
-    }
-
-    @Override
-    public void deleteById(Long id) {eventoDao.deleteById(id);
+    public void delete(Long eventoId) {
+        eventoDao.deleteById(eventoId);
     }
 
 }

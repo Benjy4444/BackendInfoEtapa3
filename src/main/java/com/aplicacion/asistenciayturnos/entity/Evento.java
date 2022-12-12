@@ -1,6 +1,7 @@
 package com.aplicacion.asistenciayturnos.entity;
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -44,9 +45,7 @@ public class Evento /* implements Serializable */ {
 
     @ManyToOne
     @JoinColumn(name = "idorganizacion")
-    //@Column(name="idorganizacion")
     private Organizacion organizacion; //Esto devuelve JSON en lugar de idorganizacion
-    //private Long idorganizacion;
 
     //Agregado el OneToMany en Organizacion... apareció esto acá
     public Organizacion getOrganizacion() {
@@ -57,6 +56,9 @@ public class Evento /* implements Serializable */ {
         this.organizacion = organizacion;
     }
     ///----------------------------------------------
+
+    @OneToMany(mappedBy="evento")
+    private Set<Turno> turno;
 
     /* Reemplazado por la anotación arriba de la clase @ToString
     @Override

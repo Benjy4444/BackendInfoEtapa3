@@ -1,22 +1,15 @@
 package com.aplicacion.asistenciayturnos.repository;
 
-import com.aplicacion.asistenciayturnos.entity.Evento;
-import com.aplicacion.asistenciayturnos.entity.Organizacion;
 import com.aplicacion.asistenciayturnos.entity.Usuario;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.transaction.Transactional;
-import java.util.List;
+import java.util.Optional;
+
 
 @Transactional
-public interface UsuarioDao {
-    public List<Usuario> findAll();
+public interface UsuarioDao extends JpaRepository<Usuario, Long> {
 
-    public Usuario findById(Long id);
-
-    public void save(Usuario usuario);
-
-    public void modify(Usuario usuario);
-
-    public void deleteById(Long id);
+    Optional<Usuario> findByDniOrApellido(Long dni, String apellido);
 
 }

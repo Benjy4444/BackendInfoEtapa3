@@ -3,20 +3,15 @@ package com.aplicacion.asistenciayturnos.repository;
 import com.aplicacion.asistenciayturnos.entity.Evento;
 import com.aplicacion.asistenciayturnos.entity.Organizacion;
 import com.aplicacion.asistenciayturnos.entity.Turno;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Transactional
-public interface TurnoDao {
-    public List<Turno> findAll();
+public interface TurnoDao extends JpaRepository<Turno, Long> {
 
-    public Turno findById(Long id);
-
-    public void save(Turno turno);
-
-    public void modify(Turno turno);
-
-    public void deleteById(Long id);
+    //Optional<Turno> findByIdorganizacionAndIdevento(Long idOrganizacion, Long idEvento);
 
 }

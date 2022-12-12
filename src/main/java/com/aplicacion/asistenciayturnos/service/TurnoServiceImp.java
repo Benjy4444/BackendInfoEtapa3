@@ -1,6 +1,7 @@
 package com.aplicacion.asistenciayturnos.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.aplicacion.asistenciayturnos.entity.Turno;
 import com.aplicacion.asistenciayturnos.repository.TurnoDao;
@@ -17,27 +18,37 @@ public class TurnoServiceImp implements TurnoService {
     private TurnoDao turnoDao;
 
     @Override
+    public Turno create(Turno turno) {
+        return turnoDao.save(turno);
+    }
+
+    @Override
+    public Turno update(Turno turno) {
+        return turnoDao.save(turno);
+    }
+
+    @Override
     public List<Turno> findAll() {
-        List<Turno> listTurnos= turnoDao.findAll();
-        return listTurnos;
+        return turnoDao.findAll();
     }
 
     @Override
-    public Turno findById(Long id) {
-        Turno turno = turnoDao.findById(id);
-        return turno;
+    public Turno findById(Long turnoId) {
+        Optional<Turno> turnoOptional = turnoDao.findById(turnoId);
+        return turnoOptional.orElse(null);
     }
 
+    /*
     @Override
-    public void save(Turno turno) {turnoDao.save(turno);
+    public List<Turno> findByIdorganizacionAndIdevento(Long idOrganizacion, Long idEvento) {
+        Optional<Turno> turnoOptional = turnoDao.findByIdorganizacionAndIdevento(idOrganizacion, idEvento);
+        return (List<Turno>) turnoOptional.orElse(null);
     }
+    */
 
     @Override
-    public void modify(Turno turno) {turnoDao.modify(turno);
-    }
-
-    @Override
-    public void deleteById(Long id) {turnoDao.deleteById(id);
+    public void delete(Long turnoId) {
+        turnoDao.deleteById(turnoId);
     }
 
 }

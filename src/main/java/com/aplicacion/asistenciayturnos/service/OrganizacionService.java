@@ -4,21 +4,20 @@ import com.aplicacion.asistenciayturnos.entity.Organizacion;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Transactional
 public interface OrganizacionService {
+
+    Organizacion create(Organizacion organizacion);
+
+    Organizacion update(Organizacion organizacion);
+
     List<Organizacion> findAll();
 
     Organizacion findById(Long organizacionId);
 
-    Organizacion findByCuit(Long organizacionCuit);
+    void delete(Long organizacionId);
 
-    Organizacion findByNombre(String organizacionNombre);
-
-    void save(Organizacion organizacion);
-
-    void deleteById(Long organizacionId);
-
-    void modify(Organizacion organizacion);
-
+    Organizacion findByCuitOrNombre(Long organizacionCuit, String organizacionNombre);
 }

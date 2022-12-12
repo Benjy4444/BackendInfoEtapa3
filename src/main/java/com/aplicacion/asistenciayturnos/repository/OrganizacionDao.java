@@ -1,24 +1,13 @@
 package com.aplicacion.asistenciayturnos.repository;
 
 import com.aplicacion.asistenciayturnos.entity.Organizacion;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.transaction.Transactional;
-import java.util.List;
+import java.util.Optional;
 
 @Transactional
-public interface OrganizacionDao {
-    List<Organizacion> findAll();
-
-    Organizacion findById(Long id);
-
-    List<Organizacion> findByCuit(Long cuit);
-
-    Organizacion findByNombre(String nombre);
-
-    void save(Organizacion organizacion);
-
-    void modify(Organizacion organizacion);
-
-    void deleteById(Long id);
+public interface OrganizacionDao extends JpaRepository<Organizacion, Long> {
+    Optional<Organizacion> findByCuitOrNombre(Long cuit, String nombre);
 
 }

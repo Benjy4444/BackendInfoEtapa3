@@ -61,7 +61,7 @@ public class Eventocontroller {
         evento.setIdevento(0L);
 
         //Este método guardará al usuario enviado
-        eventoService.save(evento);
+        eventoService.create(evento);
 
         return evento;
 
@@ -77,7 +77,7 @@ public class Eventocontroller {
     public Evento updateEvento(@RequestBody Evento evento) {
 
         //este método actualizará al usuario enviado
-        eventoService.modify(evento);
+        eventoService.update(evento);
 
         return evento;
     }
@@ -90,7 +90,7 @@ public class Eventocontroller {
     //@DeleteMapping("/eventos/{eventoId}")
     //V2
     @RequestMapping(value = "eventos/{eventoId}", method = RequestMethod.DELETE)
-    public String deteteEvento(@PathVariable Long eventoId) {
+    public String deleteEvento(@PathVariable Long eventoId) {
 
         Evento evento = eventoService.findById(eventoId);
 
@@ -99,7 +99,7 @@ public class Eventocontroller {
         }
 
         //Esto método, recibira el id de un usuario por URL y se borrará de la bd.
-        eventoService.deleteById(eventoId);
+        eventoService.delete(eventoId);
 
         return "Identificador de evento borrado - "+eventoId;
     }

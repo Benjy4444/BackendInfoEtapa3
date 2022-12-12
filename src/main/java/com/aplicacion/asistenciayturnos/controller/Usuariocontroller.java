@@ -8,23 +8,19 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-//Indiciamos que es un controlador rest
+//Indicamos que es un controlador rest
 @RestController
 @ControllerAdvice
-@RequestMapping(value = "/api/v1") //esta sera la raiz de la url, es decir http://127.0.0.1:8080/api/v1
+@RequestMapping(value = "/api/v1") //esta será la raíz de la url, es decir http://127.0.0.1:8080/api/v1
 public class Usuariocontroller {
 
-    //Inyectamos el servicio para poder hacer uso de el
+    //Inyectamos el servicio para poder hacer uso de él
     @Autowired
     private UsuarioService usuarioService;
 
-    /*Este método se hará cuando por una petición GET (como indica la anotación) se llame a la url
-    http://127.0.0.1:8080/api/v1/usuarios
-    */
+    /* Este método se hará cuando por una petición GET (como indica la anotación) se llame a la url
+    http://127.0.0.1:8080/api/v1/usuarios */
 
-    //V1
-    //@GetMapping("/usuarios")
-    //V2
     @RequestMapping(value = "/usuarios", method = RequestMethod.GET)
     public List<Usuario> findAll(){
         //retornará todos los usuarios
@@ -32,13 +28,9 @@ public class Usuariocontroller {
     }
 
     /*Este método se hará cuando por una petición GET (como indica la anotación) se llame a la url + el id de un usuario
-    http://127.0.0.1:8080/api/v1/usuarios/1
-    */
+    http://127.0.0.1:8080/api/v1/usuarios/id/1 */
 
-    //V1
-    //@GetMapping("/usuarios/{usuarioId}")
-    //V2
-    @RequestMapping(value = "usuarios/{usuarioId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/usuarios/id/{usuarioId}", method = RequestMethod.GET)
     public Usuario getUsuario(@PathVariable Long usuarioId){
         Usuario usuario = usuarioService.findById(usuarioId);
 
@@ -49,48 +41,58 @@ public class Usuariocontroller {
         return usuario;
     }
 
-    /*Este método se hará cuando por una petición POST (como indica la anotación) se llame a la url
-    http://127.0.0.1:8080/api/v1/usuarios
-    */
+    @RequestMapping(value = "/usuarios/buscardni/{usuarioDni}", method = RequestMethod.GET)
+    public Usuario getUsuarioDni(@PathVariable(required = false) Long usuarioDni, @PathVariable(required = false) String usuarioApellido){
+        Usuario usuario = usuarioService.findByDniOrApellido(usuarioDni, usuarioApellido);
 
-    //V1
-    //@PostMapping("/usuarios")
-    //V2
+        if(usuario == null) {
+            throw new RuntimeException("Dni o apellido de usuario no encontrado -"+usuarioApellido);
+        }
+        //retornará al usuario con dni o apellido pasado en la url
+        return usuario;
+    }
+
+    @RequestMapping(value = "/usuarios/buscarapellido/{usuarioApellido}", method = RequestMethod.GET)
+    public Usuario getUsuarioApellido(@PathVariable(required = false) Long usuarioDni, @PathVariable(required = false) String usuarioApellido){
+        Usuario usuario = usuarioService.findByDniOrApellido(usuarioDni, usuarioApellido);
+
+        if(usuario == null) {
+            throw new RuntimeException("Dni o apellido de usuario no encontrado -"+usuarioApellido);
+        }
+        //retornará al usuario con dni o apellido pasado en la url
+        return usuario;
+    }
+
+    /*Este método se hará cuando por una petición POST (como indica la anotación) se llame a la url
+    http://127.0.0.1:8080/api/v1/usuarios */
+
     @RequestMapping(value = "/usuarios", method = RequestMethod.POST)
     public Usuario addUsuario(@RequestBody Usuario usuario) {
-
+        //Esto setea el id en 0 del usuario a crear para que se siga la cuenta automática del id
         usuario.setIdusuario(0L);
 
         //Este método guardará al usuario enviado
-        usuarioService.save(usuario);
+        usuarioService.create(usuario);
 
         return usuario;
 
     }
     /*Este método se hará cuando por una petición PUT (como indica la anotación) se llame a la url
-    http://127.0.0.1:8080/api/v1/usuarios
-    */
+    http://127.0.0.1:8080/api/v1/usuarios */
 
-    //V1
-    //@PutMapping("/usuarios")
-    //V2
     @RequestMapping(value = "/usuarios", method = RequestMethod.PUT)
     public Usuario updateUsuario(@RequestBody Usuario usuario) {
 
         //este método actualizará al usuario enviado
-        usuarioService.modify(usuario);
+        usuarioService.update(usuario);
 
         return usuario;
     }
 
     /*Este método se hará cuando por una petición DELETE (como indica la anotación) se llame a la url + id del usuario
-    http://127.0.0.1:8080/api/v1/usuarios/1
-    */
+    http://127.0.0.1:8080/api/v1/usuarios/1 */
 
-    //V1
-    //@DeleteMapping("/usuarios/{usuarioId}")
-    //V2
-    @RequestMapping(value = "usuarios/{usuarioId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/usuarios/{usuarioId}", method = RequestMethod.DELETE)
     public String deleteUsuario(@PathVariable Long usuarioId) {
 
         Usuario usuario = usuarioService.findById(usuarioId);
@@ -100,7 +102,7 @@ public class Usuariocontroller {
         }
 
         //Esto método, recibira el id de un usuario por URL y se borrará de la bd.
-        usuarioService.deleteById(usuarioId);
+        usuarioService.delete(usuarioId);
 
         return "Identificador de usuario borrado - "+usuarioId;
     }

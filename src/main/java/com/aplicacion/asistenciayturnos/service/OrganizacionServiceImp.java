@@ -1,6 +1,7 @@
 package com.aplicacion.asistenciayturnos.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,42 +18,35 @@ public class OrganizacionServiceImp implements OrganizacionService {
     private OrganizacionDao organizacionDao;
 
     @Override
+    public Organizacion create(Organizacion organizacion) {
+        return organizacionDao.save(organizacion);
+    }
+
+    @Override
+    public Organizacion update(Organizacion organizacion) {
+        return organizacionDao.save(organizacion);
+    }
+
+    @Override
     public List<Organizacion> findAll() {
-        List<Organizacion> listOrganizaciones= organizacionDao.findAll();
-        return listOrganizaciones;
+        return organizacionDao.findAll();
     }
 
     @Override
-    public Organizacion findById(Long id) {
-        Organizacion organizacion = organizacionDao.findById(id);
-        return organizacion;
+    public Organizacion findById(Long organizacionId) {
+        Optional<Organizacion> organizacionOptional = organizacionDao.findById(organizacionId);
+        return organizacionOptional.orElse(null);
     }
 
     @Override
-    public Organizacion findByCuit(Long cuit) {
-        List<Organizacion> listOrganizaciones= organizacionDao.findByCuit(cuit);
-        return (Organizacion) listOrganizaciones;
+    public Organizacion findByCuitOrNombre(Long organizacionCuit, String organizacionNombre) {
+        Optional<Organizacion> organizacionOptional = organizacionDao.findByCuitOrNombre(organizacionCuit, organizacionNombre);
+        return organizacionOptional.orElse(null);
     }
 
     @Override
-    public Organizacion findByNombre(String nombre) {
-        Organizacion organizacion = organizacionDao.findByNombre(nombre);
-        return organizacion;
-    }
-
-    @Override
-    public void save(Organizacion organizacion) {
-        organizacionDao.save(organizacion);
-    }
-
-    @Override
-    public void modify(Organizacion organizacion) {
-        organizacionDao.modify(organizacion);
-    }
-
-    @Override
-    public void deleteById(Long id) {
-        organizacionDao.deleteById(id);
+    public void delete(Long organizacionId) {
+        organizacionDao.deleteById(organizacionId);
     }
 
 }

@@ -1,10 +1,13 @@
 package com.aplicacion.asistenciayturnos.entity;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 @Entity
@@ -24,11 +27,11 @@ public class Turno /* implements Serializable */ {
     @Getter @Setter @Column(name="idturno")
     private Long idturno;
 
-    @Getter @Setter @Column(name="idevento")
-    private Long idevento;
+    //@Getter @Setter @Column(name="idevento")
+    //private Long idevento;
 
-    @Getter @Setter @Column(name="idusuario")
-    private Long idusuario;
+    //@Getter @Setter @Column(name="idusuario")
+    //private Long idusuario;
 
     @Getter @Setter @Column(name="codigo")
     private String codigo;
@@ -42,23 +45,21 @@ public class Turno /* implements Serializable */ {
     @Getter @Setter @Column(name="activo")
     private Boolean activo;
 
-    /*
     @ManyToOne
-    @JoinColumn(name = "idorganizacion")
-    //@Column(name="idorganizacion")
-    private Organizacion organizacion; //Esto devuelve JSON en lugar de idorganizacion
-    //private Long idorganizacion;
+    @JoinColumn(name = "idevento", insertable = false, updatable = false)
+    private Evento evento;
 
-    //Agregado el OneToMany en Organizacion... apareció esto acá
-    public Organizacion getOrganizacion() {
-        return organizacion;
+    public Evento getEvento() {
+        return evento;
     }
 
-    public void setOrganizacion(Organizacion organizacion) {
-        this.organizacion = organizacion;
+    public void setEvento(Evento evento) {
+        this.evento = evento;
     }
-    */
-    ///----------------------------------------------
+
+    @ManyToMany(mappedBy = "turnos")
+    @JsonIgnore
+    public List<Usuario> usuarios = new ArrayList<>();
 
     /* Reemplazado por la anotación arriba de la clase @ToString
     @Override

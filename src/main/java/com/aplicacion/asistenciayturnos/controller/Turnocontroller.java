@@ -1,5 +1,6 @@
 package com.aplicacion.asistenciayturnos.controller;
 
+import com.aplicacion.asistenciayturnos.entity.Organizacion;
 import com.aplicacion.asistenciayturnos.entity.Turno;
 
 import com.aplicacion.asistenciayturnos.service.TurnoService;
@@ -49,6 +50,19 @@ public class Turnocontroller {
         return turno;
     }
 
+    /*
+    @RequestMapping(value = "/turnos/buscarorganizacionyevento/{idOrganizacion}/{idEvento}", method = RequestMethod.GET)
+    public Turno getTurnosPorOrganizacionYEvento(@PathVariable(required = false) Long idOrganizacion, @PathVariable(required = false) Long idEvento){
+        List<Turno> turnos = turnoService.findByIdorganizacionAndIdevento(idOrganizacion, idEvento);
+
+        if(turnos == null) {
+            throw new RuntimeException("Turnos por organización y evento no encontrados.");
+        }
+        //retornará al usuario con cuit o nombre pasado en la url
+        return (Turno) turnos;
+    }
+    */
+
     /*Este método se hará cuando por una petición POST (como indica la anotación) se llame a la url
     http://127.0.0.1:8080/api/v1/turnos
     */
@@ -62,7 +76,7 @@ public class Turnocontroller {
         turno.setIdturno(0L);
 
         //Este método guardará el turno enviado
-        turnoService.save(turno);
+        turnoService.create(turno);
 
         return turno;
 
@@ -78,7 +92,7 @@ public class Turnocontroller {
     public Turno updateTurno(@RequestBody Turno turno) {
 
         //este método actualizará el turno enviado
-        turnoService.modify(turno);
+        turnoService.update(turno);
 
         return turno;
     }
@@ -100,7 +114,7 @@ public class Turnocontroller {
         }
 
         //Esto método, recibira el id de un usuario por URL y se borrará de la bd.
-        turnoService.deleteById(turnoId);
+        turnoService.delete(turnoId);
 
         return "Identificador de turno borrado - "+turnoId;
     }

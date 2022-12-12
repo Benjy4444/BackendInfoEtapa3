@@ -1,8 +1,12 @@
 package com.aplicacion.asistenciayturnos.service;
 
 import java.util.List;
+import java.util.Optional;
 
+import com.aplicacion.asistenciayturnos.entity.Organizacion;
+import com.aplicacion.asistenciayturnos.entity.Turno;
 import com.aplicacion.asistenciayturnos.entity.Usuario;
+import com.aplicacion.asistenciayturnos.repository.TurnoDao;
 import com.aplicacion.asistenciayturnos.repository.UsuarioDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,27 +21,35 @@ public class UsuarioServiceImp implements UsuarioService {
     private UsuarioDao usuarioDao;
 
     @Override
+    public Usuario create(Usuario usuario) {
+        return usuarioDao.save(usuario);
+    }
+
+    @Override
+    public Usuario update(Usuario usuario) {
+        return usuarioDao.save(usuario);
+    }
+
+    @Override
     public List<Usuario> findAll() {
-        List<Usuario> listUsuarios = usuarioDao.findAll();
-        return listUsuarios;
+        return usuarioDao.findAll();
     }
 
     @Override
-    public Usuario findById(Long id) {
-        Usuario usuario = usuarioDao.findById(id);
-        return usuario;
+    public Usuario findById(Long usuarioId) {
+        Optional<Usuario> usuarioOptional = usuarioDao.findById(usuarioId);
+        return usuarioOptional.orElse(null);
     }
 
     @Override
-    public void save(Usuario usuario) {usuarioDao.save(usuario);
+    public Usuario findByDniOrApellido(Long usuarioDni, String usuarioApellido) {
+        Optional<Usuario> usuarioOptional = usuarioDao.findByDniOrApellido(usuarioDni, usuarioApellido);
+        return usuarioOptional.orElse(null);
     }
 
     @Override
-    public void modify(Usuario usuario) {usuarioDao.modify(usuario);
-    }
-
-    @Override
-    public void deleteById(Long id) {usuarioDao.deleteById(id);
+    public void delete(Long usuarioId) {
+        usuarioDao.deleteById(usuarioId);
     }
 
 }

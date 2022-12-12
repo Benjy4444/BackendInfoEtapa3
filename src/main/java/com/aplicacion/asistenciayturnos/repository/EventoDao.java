@@ -1,19 +1,13 @@
 package com.aplicacion.asistenciayturnos.repository;
 
 import com.aplicacion.asistenciayturnos.entity.Evento;
+import com.aplicacion.asistenciayturnos.entity.Organizacion;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
 @Transactional
-public interface EventoDao {
-    public List<Evento> findAll();
+public interface EventoDao extends JpaRepository<Evento, Long> {
 
-    public Evento findById(Long id);
-
-    public void save(Evento evento);
-
-    public void modify(Evento evento);
-
-    public void deleteById(Long id);
 }

@@ -6,8 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
-//Indiciamos que es un controlador rest
+//Indicamos que es un controlador rest
 @RestController
 @ControllerAdvice
 @RequestMapping(value = "/api/v1") //esta sera la raiz de la url, es decir http://127.0.0.1:8080/api/v1
@@ -36,7 +37,7 @@ public class Organizacioncontroller {
     //V1
     //@GetMapping("/organizaciones/{organizacionId}")
     //V2
-    @RequestMapping(value = "organizaciones/id/{organizacionId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/organizaciones/id/{organizacionId}", method = RequestMethod.GET)
     public Organizacion getOrganizacion(@PathVariable Long organizacionId){
         Organizacion organizacion = organizacionService.findById(organizacionId);
 
@@ -47,30 +48,27 @@ public class Organizacioncontroller {
         return organizacion;
     }
 
-    /*Esta parte de búsqueda por cuit y nombre no funca... todavía... hay que revisar el tema de Querys en el ...DaoImp...
-
-    @RequestMapping(value = "organizaciones/cuit/{organizacionCuit}", method = RequestMethod.GET)
-    public Organizacion getOrganizacionCuit(@PathVariable Long organizacionCuit){
-        Organizacion organizacion = organizacionService.findByCuit(organizacionCuit);
+    @RequestMapping(value = "/organizaciones/buscarcuit/{organizacionCuit}", method = RequestMethod.GET)
+    public Organizacion getOrganizacionCuit(@PathVariable(required = false) Long organizacionCuit, @PathVariable(required = false) String organizacionNombre){
+        Organizacion organizacion = organizacionService.findByCuitOrNombre(organizacionCuit, organizacionNombre);
 
         if(organizacion == null) {
-            throw new RuntimeException("CUIT de organizacion no encontrado -"+organizacionCuit);
+            throw new RuntimeException("Cuit o nombre de organizacion no encontrado -"+organizacionCuit);
         }
-        //retornará al usuario con cuit pasado en la url
+        //retornará al usuario con cuit o nombre pasado en la url
         return organizacion;
     }
 
-    @RequestMapping(value = "organizaciones/nombre/{organizacionNombre}", method = RequestMethod.GET)
-    public Organizacion getOrganizacionNombre(@PathVariable String organizacionNombre){
-        Organizacion organizacion = organizacionService.findByNombre(organizacionNombre);
+    @RequestMapping(value = "/organizaciones/buscarnombre/{organizacionNombre}", method = RequestMethod.GET)
+    public Organizacion getOrganizacionNombre(@PathVariable(required = false) Long organizacionCuit, @PathVariable(required = false) String organizacionNombre){
+        Organizacion organizacion = organizacionService.findByCuitOrNombre(organizacionCuit, organizacionNombre);
 
         if(organizacion == null) {
-            throw new RuntimeException("Nombre de organizacion no encontrado -"+organizacionNombre);
+            throw new RuntimeException("Cuit o nombre de organizacion no encontrado -"+organizacionNombre);
         }
-        //retornará al usuario con nombre pasado en la url
+        //retornará al usuario con cuit o nombre pasado en la url
         return organizacion;
     }
-    */
 
     /*Este método se hará cuando por una petición POST (como indica la anotación) se llame a la url
     http://127.0.0.1:8080/api/v1/organizaciones/
@@ -79,16 +77,18 @@ public class Organizacioncontroller {
     //V1
     //@PostMapping("/organizaciones")
     //V2
+
     @RequestMapping(value = "/organizaciones", method = RequestMethod.POST)
     public Organizacion addOrganizacion(@RequestBody Organizacion organizacion) {
         organizacion.setIdorganizacion(0L);
 
         //Este método guardará al usuario enviado
-        organizacionService.save(organizacion);
+        organizacionService.create(organizacion);
 
         return organizacion;
 
     }
+
     /*Este método se hará cuando por una petición PUT (como indica la anotación) se llame a la url
     http://127.0.0.1:8080/api/v1/organizaciones
     */
@@ -96,11 +96,12 @@ public class Organizacioncontroller {
     //V1
     //@PutMapping("/organizaciones")
     //V2
+
     @RequestMapping(value = "/organizaciones", method = RequestMethod.PUT)
     public Organizacion updateOrganizacion(@RequestBody Organizacion organizacion) {
 
         //este método actualizará al usuario enviado
-        organizacionService.modify(organizacion);
+        organizacionService.update(organizacion);
 
         return organizacion;
     }
@@ -112,19 +113,19 @@ public class Organizacioncontroller {
     //V1
     //@DeleteMapping("/organizaciones/{organizacionId}")
     //V2
-    @RequestMapping(value = "organizaciones/{organizacionId}", method = RequestMethod.DELETE)
+
+    @RequestMapping(value = "/organizaciones/{organizacionId}", method = RequestMethod.DELETE)
     public String deleteOrganizacion(@PathVariable Long organizacionId) {
 
-        Organizacion organizacion = organizacionService.findById(organizacionId);
+        Optional<Organizacion> organizacion = Optional.ofNullable(organizacionService.findById(organizacionId));
 
         if(organizacion == null) {
             throw new RuntimeException("Identificador de organizacion no encontrado -"+organizacionId);
         }
 
         //Esto método, recibira el id de un usuario por URL y se borrará de la bd.
-        organizacionService.deleteById(organizacionId);
+        organizacionService.delete(organizacionId);
 
         return "Identificador de organizacion borrado - "+organizacionId;
     }
-
 }

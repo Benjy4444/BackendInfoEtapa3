@@ -1,5 +1,6 @@
 package com.aplicacion.asistenciayturnos.service;
 
+import com.aplicacion.asistenciayturnos.entity.Evento;
 import com.aplicacion.asistenciayturnos.entity.Turno;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -7,14 +8,16 @@ import java.util.List;
 
 @Transactional
 public interface TurnoService {
+    Turno create(Turno turno);
+
+    Turno update(Turno turno);
+
     List<Turno> findAll();
 
     Turno findById(Long turnoId);
 
-    void save(Turno turno);
+    void delete(Long turnoId);
 
-    void deleteById(Long turnoId);
-
-    void modify(Turno turno);
+    //List<Turno> findByIdorganizacionAndIdevento(Long idOrganizacion, Long idEvento);
 
 }

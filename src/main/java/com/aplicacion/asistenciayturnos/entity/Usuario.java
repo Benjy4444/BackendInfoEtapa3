@@ -1,13 +1,11 @@
 package com.aplicacion.asistenciayturnos.entity;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -55,23 +53,22 @@ public class Usuario /* implements Serializable */ {
     @Getter @Setter @Column(name="clave")
     private String clave;
 
-    /*
-    @ManyToOne
-    @JoinColumn(name = "idorganizacion")
-    //@Column(name="idorganizacion")
-    private Organizacion organizacion; //Esto devuelve JSON en lugar de idorganizacion
-    //private Long idorganizacion;
+    @JoinTable(name = "usuario_turno",
+            joinColumns = @JoinColumn(name = "idusuario", nullable = false),
+    inverseJoinColumns = @JoinColumn(name = "idturno",nullable = false))
 
-    //Agregado el OneToMany en Organizacion... apareció esto acá
-    public Organizacion getOrganizacion() {
-        return organizacion;
-    }
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JsonIgnore
+    private List<Turno> turnos = new ArrayList<>();
 
-    public void setOrganizacion(Organizacion organizacion) {
-        this.organizacion = organizacion;
+    @JsonIgnore
+    public List<Turno> getTurnos() {
+        return turnos;
     }
-    */
-    ///----------------------------------------------
+    @JsonIgnore
+    public void setTurnos(List<Turno> turnos) {
+        this.turnos = turnos;
+    }
 
     /* Reemplazado por la anotación arriba de la clase @ToString
     @Override
