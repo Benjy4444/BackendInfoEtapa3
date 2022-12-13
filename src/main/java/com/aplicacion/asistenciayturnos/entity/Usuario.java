@@ -53,6 +53,10 @@ public class Usuario /* implements Serializable */ {
     @Getter @Setter @Column(name="clave")
     private String clave;
 
+    @OneToMany(mappedBy="usuario")
+    private Set<Turno> turno;
+
+    /* //Lo que sigue crea la tabla usuario_turno... para usar el @ManyToMany... que no pude utilizar bien
     @JoinTable(name = "usuario_turno",
             joinColumns = @JoinColumn(name = "idusuario", nullable = false),
     inverseJoinColumns = @JoinColumn(name = "idturno",nullable = false))
@@ -69,7 +73,7 @@ public class Usuario /* implements Serializable */ {
     public void setTurnos(List<Turno> turnos) {
         this.turnos = turnos;
     }
-
+    */
     /* Reemplazado por la anotación arriba de la clase @ToString
     @Override
     public String toString() {

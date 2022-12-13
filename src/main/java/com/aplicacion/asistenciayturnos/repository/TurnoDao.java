@@ -12,6 +12,7 @@ import java.util.Optional;
 @Transactional
 public interface TurnoDao extends JpaRepository<Turno, Long> {
 
-    //Optional<Turno> findByIdorganizacionAndIdevento(Long idOrganizacion, Long idEvento);
+    //Turno findByIdorganizacionAndIdevento(Long idOrganizacion, Long idEvento);
 
+    List<Turno> findByIdevento(Long idEvento);
 }

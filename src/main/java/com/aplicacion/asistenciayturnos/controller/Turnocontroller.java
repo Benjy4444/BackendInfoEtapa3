@@ -39,7 +39,7 @@ public class Turnocontroller {
     //V1
     //@GetMapping("/turnos/{turnoId}")
     //V2
-    @RequestMapping(value = "turnos/{turnoId}", method = RequestMethod.GET)
+    @RequestMapping(value = "turnos/id/{turnoId}", method = RequestMethod.GET)
     public Turno getTurno(@PathVariable Long turnoId){
         Turno turno = turnoService.findById(turnoId);
 
@@ -50,7 +50,7 @@ public class Turnocontroller {
         return turno;
     }
 
-    /*
+    /* Esto no funciona por la búsqueda...
     @RequestMapping(value = "/turnos/buscarorganizacionyevento/{idOrganizacion}/{idEvento}", method = RequestMethod.GET)
     public Turno getTurnosPorOrganizacionYEvento(@PathVariable(required = false) Long idOrganizacion, @PathVariable(required = false) Long idEvento){
         List<Turno> turnos = turnoService.findByIdorganizacionAndIdevento(idOrganizacion, idEvento);
@@ -59,6 +59,19 @@ public class Turnocontroller {
             throw new RuntimeException("Turnos por organización y evento no encontrados.");
         }
         //retornará al usuario con cuit o nombre pasado en la url
+        return (Turno) turnos;
+    }
+    */
+
+    /*
+    @RequestMapping(value = "/turnos/evento/{idEvento}", method = RequestMethod.GET)
+    public Turno getTurnosPorEvento(@PathVariable(required = false) Long idEvento){
+        List<Turno> turnos = turnoService.findByIdevento(idEvento);
+
+        if(turnos == null) {
+            throw new RuntimeException("Turnos no encontrados para evento - "+idEvento);
+        }
+        //retornará los turnos del evento pasado en la url
         return (Turno) turnos;
     }
     */

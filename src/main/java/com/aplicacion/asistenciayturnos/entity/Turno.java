@@ -27,8 +27,8 @@ public class Turno /* implements Serializable */ {
     @Getter @Setter @Column(name="idturno")
     private Long idturno;
 
-    //@Getter @Setter @Column(name="idevento")
-    //private Long idevento;
+    @Getter @Setter @Column(name="idevento")
+    private Long idevento;
 
     //@Getter @Setter @Column(name="idusuario")
     //private Long idusuario;
@@ -57,9 +57,15 @@ public class Turno /* implements Serializable */ {
         this.evento = evento;
     }
 
+    @ManyToOne
+    @JoinColumn(name = "idusuario")
+    private Usuario usuario; //Esto devuelve JSON en lugar de idusuario
+
+    /*
     @ManyToMany(mappedBy = "turnos")
     @JsonIgnore
     public List<Usuario> usuarios = new ArrayList<>();
+    */
 
     /* Reemplazado por la anotación arriba de la clase @ToString
     @Override
