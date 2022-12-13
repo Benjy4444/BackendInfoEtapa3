@@ -1,10 +1,14 @@
 package com.aplicacion.asistenciayturnos.controller;
 
+import com.aplicacion.asistenciayturnos.converter.Converters;
+import com.aplicacion.asistenciayturnos.dto.OrganizacionDto;
+import com.aplicacion.asistenciayturnos.dto.OrganizacionEventoTurnoDto;
 import com.aplicacion.asistenciayturnos.entity.Organizacion;
 import com.aplicacion.asistenciayturnos.service.OrganizacionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,9 +30,20 @@ public class Organizacioncontroller {
     //@GetMapping("/organizaciones")
     //V2
     @RequestMapping(value = "/organizaciones", method = RequestMethod.GET)
-    public List<Organizacion> findAll(){
-        //retornará todos los usuarios
-        return organizacionService.findAll();
+    public List<OrganizacionDto> findAll(){
+
+        List<Organizacion> listaOrganizaciones = organizacionService.findAll();
+        List<OrganizacionDto> listaOrganizacionesDto = new ArrayList<>();
+
+        for (Organizacion organizacion:listaOrganizaciones){
+
+            OrganizacionDto organizacionDto = Converters.mapToOrganizacionDto(organizacion);
+            listaOrganizacionesDto.add(organizacionDto);
+
+        }
+
+        //retornará todos las organizaciones
+        return listaOrganizacionesDto;
     }
 
     /*Este método se hará cuando por una petición GET (como indica la anotación) se llame a la url + el id de un usuario
@@ -38,36 +53,50 @@ public class Organizacioncontroller {
     //@GetMapping("/organizaciones/{organizacionId}")
     //V2
     @RequestMapping(value = "/organizaciones/id/{organizacionId}", method = RequestMethod.GET)
-    public Organizacion getOrganizacion(@PathVariable Long organizacionId){
+    public OrganizacionDto getOrganizacion(@PathVariable Long organizacionId){
+
         Organizacion organizacion = organizacionService.findById(organizacionId);
 
-        if(organizacion == null) {
+        if(organizacion==null) {
             throw new RuntimeException("Identificador de organizacion no encontrado -"+organizacionId);
         }
-        //retornará al usuario con id pasado en la url
-        return organizacion;
+
+        OrganizacionDto organizacionDto = Converters.mapToOrganizacionDto(organizacion);
+
+            //retornará al usuario con id pasado en la url
+        return organizacionDto;
     }
 
-    @RequestMapping(value = "/organizaciones/buscarcuit/{organizacionCuit}", method = RequestMethod.GET)
-    public Organizacion getOrganizacionCuit(@PathVariable(required = false) Long organizacionCuit, @PathVariable(required = false) String organizacionNombre){
+    @RequestMapping(value = "/organizaciones/cuit/{organizacionCuit}", method = RequestMethod.GET)
+    public OrganizacionDto getOrganizacionCuit(@PathVariable(required = false) Long organizacionCuit, @PathVariable(required = false) String organizacionNombre){
+        Organizacion organizacion = organizacionService.findByCuitOrNombre(organizacionCuit, organizacionNombre);
+
+        //Esto que sigue es un dto bien aplicado???
+        OrganizacionDto organizacionDto = Converters.mapToOrganizacionDto(organizacion);
+
+        if(organizacion == null) {
+            throw new RuntimeException("Cuit de organizacion no encontrado -"+organizacionCuit);
+        }
+        //retornará la organizacion con cuit en la url
+        return organizacionDto;
+    }
+
+    //Lo hice separado en el controller a la búsqueda por cuit o nombre, pero con el mismo servicio, porque
+    //me daba un error de página no encontrada cuando intentaba hacerlo en forma conjunta a las opciones de búsqueda
+
+    @RequestMapping(value = "/organizaciones/nombre/{organizacionNombre}", method = RequestMethod.GET)
+    public OrganizacionDto getOrganizacionNombre(@PathVariable(required = false) Long organizacionCuit, @PathVariable(required = false) String organizacionNombre){
         Organizacion organizacion = organizacionService.findByCuitOrNombre(organizacionCuit, organizacionNombre);
 
         if(organizacion == null) {
-            throw new RuntimeException("Cuit o nombre de organizacion no encontrado -"+organizacionCuit);
+            throw new RuntimeException("Nombre de organizacion no encontrado -"+organizacionNombre);
         }
-        //retornará al usuario con cuit o nombre pasado en la url
-        return organizacion;
-    }
 
-    @RequestMapping(value = "/organizaciones/buscarnombre/{organizacionNombre}", method = RequestMethod.GET)
-    public Organizacion getOrganizacionNombre(@PathVariable(required = false) Long organizacionCuit, @PathVariable(required = false) String organizacionNombre){
-        Organizacion organizacion = organizacionService.findByCuitOrNombre(organizacionCuit, organizacionNombre);
+        //Esto que sigue es un dto bien aplicado???
+        OrganizacionDto organizacionDto = Converters.mapToOrganizacionDto(organizacion);
 
-        if(organizacion == null) {
-            throw new RuntimeException("Cuit o nombre de organizacion no encontrado -"+organizacionNombre);
-        }
-        //retornará al usuario con cuit o nombre pasado en la url
-        return organizacion;
+        //retornará la organizacion con nombre pasado en la url
+        return organizacionDto;
     }
 
     /*Este método se hará cuando por una petición POST (como indica la anotación) se llame a la url
@@ -84,6 +113,9 @@ public class Organizacioncontroller {
 
         //Este método guardará al usuario enviado
         organizacionService.create(organizacion);
+
+        //Esto que sigue es un dto bien aplicado???
+        //OrganizacionDto organizacionDto = Converters.mapToOrganizacionDto(organizacion);
 
         return organizacion;
 
@@ -117,7 +149,7 @@ public class Organizacioncontroller {
     @RequestMapping(value = "/organizaciones/{organizacionId}", method = RequestMethod.DELETE)
     public String deleteOrganizacion(@PathVariable Long organizacionId) {
 
-        Optional<Organizacion> organizacion = Optional.ofNullable(organizacionService.findById(organizacionId));
+        Organizacion organizacion = organizacionService.findById(organizacionId);
 
         if(organizacion == null) {
             throw new RuntimeException("Identificador de organizacion no encontrado -"+organizacionId);

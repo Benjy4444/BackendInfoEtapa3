@@ -1,11 +1,16 @@
 package com.aplicacion.asistenciayturnos.controller;
 
+import com.aplicacion.asistenciayturnos.converter.Converters;
+import com.aplicacion.asistenciayturnos.dto.OrganizacionDto;
+import com.aplicacion.asistenciayturnos.dto.UsuarioDto;
+import com.aplicacion.asistenciayturnos.entity.Organizacion;
 import com.aplicacion.asistenciayturnos.entity.Usuario;
 
 import com.aplicacion.asistenciayturnos.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 //Indicamos que es un controlador rest
@@ -22,45 +27,60 @@ public class Usuariocontroller {
     http://127.0.0.1:8080/api/v1/usuarios */
 
     @RequestMapping(value = "/usuarios", method = RequestMethod.GET)
-    public List<Usuario> findAll(){
+    public List<UsuarioDto> findAll(){
+        List<Usuario> listaUsuarios = usuarioService.findAll();
+        List<UsuarioDto> listaUsuariosDto = new ArrayList<>();
+
+        for (Usuario usuario:listaUsuarios){
+
+            UsuarioDto usuarioDto = Converters.mapToUsuarioDto(usuario);
+            listaUsuariosDto.add(usuarioDto);
+
+        }
         //retornará todos los usuarios
-        return usuarioService.findAll();
+        return listaUsuariosDto;
     }
 
     /*Este método se hará cuando por una petición GET (como indica la anotación) se llame a la url + el id de un usuario
     http://127.0.0.1:8080/api/v1/usuarios/id/1 */
 
     @RequestMapping(value = "/usuarios/id/{usuarioId}", method = RequestMethod.GET)
-    public Usuario getUsuario(@PathVariable Long usuarioId){
+    public UsuarioDto getUsuario(@PathVariable Long usuarioId){
         Usuario usuario = usuarioService.findById(usuarioId);
 
         if(usuario == null) {
             throw new RuntimeException("Identificador de usuario no encontrado -"+usuarioId);
         }
+
+        UsuarioDto usuarioDto = Converters.mapToUsuarioDto(usuario);
         //retornará al usuario con id pasado en la url
-        return usuario;
+        return usuarioDto;
     }
 
-    @RequestMapping(value = "/usuarios/buscardni/{usuarioDni}", method = RequestMethod.GET)
-    public Usuario getUsuarioDni(@PathVariable(required = false) Long usuarioDni, @PathVariable(required = false) String usuarioApellido){
+    @RequestMapping(value = "/usuarios/dni/{usuarioDni}", method = RequestMethod.GET)
+    public UsuarioDto getUsuarioDni(@PathVariable(required = false) Long usuarioDni, @PathVariable(required = false) String usuarioApellido){
         Usuario usuario = usuarioService.findByDniOrApellido(usuarioDni, usuarioApellido);
 
         if(usuario == null) {
-            throw new RuntimeException("Dni o apellido de usuario no encontrado -"+usuarioApellido);
+            throw new RuntimeException("Dni de usuario no encontrado -"+usuarioDni);
         }
-        //retornará al usuario con dni o apellido pasado en la url
-        return usuario;
+
+        UsuarioDto usuarioDto = Converters.mapToUsuarioDto(usuario);
+        //retornará al usuario con dni pasado en la url
+        return usuarioDto;
     }
 
-    @RequestMapping(value = "/usuarios/buscarapellido/{usuarioApellido}", method = RequestMethod.GET)
-    public Usuario getUsuarioApellido(@PathVariable(required = false) Long usuarioDni, @PathVariable(required = false) String usuarioApellido){
+    @RequestMapping(value = "/usuarios/apellido/{usuarioApellido}", method = RequestMethod.GET)
+    public UsuarioDto getUsuarioApellido(@PathVariable(required = false) Long usuarioDni, @PathVariable(required = false) String usuarioApellido){
         Usuario usuario = usuarioService.findByDniOrApellido(usuarioDni, usuarioApellido);
 
         if(usuario == null) {
-            throw new RuntimeException("Dni o apellido de usuario no encontrado -"+usuarioApellido);
+            throw new RuntimeException("Apellido de usuario no encontrado -"+usuarioApellido);
         }
-        //retornará al usuario con dni o apellido pasado en la url
-        return usuario;
+
+        UsuarioDto usuarioDto = Converters.mapToUsuarioDto(usuario);
+        //retornará al usuario con apellido pasado en la url
+        return usuarioDto;
     }
 
     /*Este método se hará cuando por una petición POST (como indica la anotación) se llame a la url

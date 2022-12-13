@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import com.aplicacion.asistenciayturnos.dto.OrganizacionDto;
 import lombok.*;
 
 @Entity

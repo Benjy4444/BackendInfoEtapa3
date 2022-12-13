@@ -1,8 +1,6 @@
 package com.aplicacion.asistenciayturnos.dto;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 
@@ -10,17 +8,20 @@ import java.io.Serializable;
  * A DTO for the {@link com.aplicacion.asistenciayturnos.entity.Usuario} entity
  */
 @Data
+@NoArgsConstructor
+//@RequiredArgsConstructor
+@AllArgsConstructor
 public class UsuarioDto implements Serializable {
     @Getter @Setter
-    private final Long dni;
+    private Long dni;
     @Getter @Setter
-    private final String nombre;
+    private String nombre;
     @Getter @Setter
-    private final String apellido;
+    private String apellido;
     @Getter @Setter
-    private final String direccion;
+    private String direccion;
     @Getter @Setter
-    private final Long telefono;
+    private Long telefono;
     @Getter @Setter
-    private final String correo;
+    private String correo;
 }

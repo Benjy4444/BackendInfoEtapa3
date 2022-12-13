@@ -1,10 +1,15 @@
 package com.aplicacion.asistenciayturnos.controller;
 
+import com.aplicacion.asistenciayturnos.converter.Converters;
+import com.aplicacion.asistenciayturnos.dto.EventoDto;
+import com.aplicacion.asistenciayturnos.dto.OrganizacionDto;
 import com.aplicacion.asistenciayturnos.entity.Evento;
+import com.aplicacion.asistenciayturnos.entity.Organizacion;
 import com.aplicacion.asistenciayturnos.service.EventoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 //Indiciamos que es un controlador rest
@@ -25,9 +30,19 @@ public class Eventocontroller {
     //@GetMapping("/eventos")
     //V2
     @RequestMapping(value = "/eventos", method = RequestMethod.GET)
-    public List<Evento> findAll(){
+    public List<EventoDto> findAll(){
+        List<Evento> listaEventos = eventoService.findAll();
+        List<EventoDto> listaEventosDto = new ArrayList<>();
+
+        for (Evento evento:listaEventos){
+
+            EventoDto eventoDto = Converters.mapToEventoDto(evento);
+            listaEventosDto.add(eventoDto);
+
+        }
+
         //retornará todos los usuarios
-        return eventoService.findAll();
+        return listaEventosDto;
     }
 
     /*Este método se hará cuando por una petición GET (como indica la anotación) se llame a la url + el id de un usuario
@@ -38,14 +53,16 @@ public class Eventocontroller {
     //@GetMapping("/eventos/{eventoId}")
     //V2
     @RequestMapping(value = "eventos/{eventoId}", method = RequestMethod.GET)
-    public Evento getEvento(@PathVariable Long eventoId){
+    public EventoDto getEvento(@PathVariable Long eventoId){
         Evento evento = eventoService.findById(eventoId);
 
         if(evento == null) {
             throw new RuntimeException("Identificador de evento no encontrado -"+eventoId);
         }
-        //retornará al usuario con id pasado en la url
-        return evento;
+
+        EventoDto eventoDto = Converters.mapToEventoDto(evento);
+        //retornará el evento con id pasado en la url
+        return eventoDto;
     }
 
     /*Este método se hará cuando por una petición POST (como indica la anotación) se llame a la url

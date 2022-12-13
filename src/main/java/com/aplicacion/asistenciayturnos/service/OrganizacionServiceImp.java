@@ -34,14 +34,14 @@ public class OrganizacionServiceImp implements OrganizacionService {
 
     @Override
     public Organizacion findById(Long organizacionId) {
-        Optional<Organizacion> organizacionOptional = organizacionDao.findById(organizacionId);
-        return organizacionOptional.orElse(null);
+
+        return organizacionDao.findById(organizacionId).orElse(null);
     }
 
     @Override
     public Organizacion findByCuitOrNombre(Long organizacionCuit, String organizacionNombre) {
-        Optional<Organizacion> organizacionOptional = organizacionDao.findByCuitOrNombre(organizacionCuit, organizacionNombre);
-        return organizacionOptional.orElse(null);
+        Organizacion organizacion = organizacionDao.findByCuitOrNombre(organizacionCuit, organizacionNombre);
+        return organizacion;
     }
 
     @Override
