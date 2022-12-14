@@ -2,7 +2,6 @@ package com.aplicacion.asistenciayturnos.controller;
 
 import com.aplicacion.asistenciayturnos.converter.Converters;
 import com.aplicacion.asistenciayturnos.dto.OrganizacionDto;
-import com.aplicacion.asistenciayturnos.dto.OrganizacionEventoTurnoDto;
 import com.aplicacion.asistenciayturnos.entity.Organizacion;
 import com.aplicacion.asistenciayturnos.service.OrganizacionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 //Indicamos que es un controlador rest
 @RestController

@@ -27,12 +27,6 @@ public class Turno /* implements Serializable */ {
     @Getter @Setter @Column(name="idturno")
     private Long idturno;
 
-    @Getter @Setter @Column(name="idevento")
-    private Long idevento;
-
-    //@Getter @Setter @Column(name="idusuario")
-    //private Long idusuario;
-
     @Getter @Setter @Column(name="codigo")
     private String codigo;
 
@@ -44,6 +38,9 @@ public class Turno /* implements Serializable */ {
 
     @Getter @Setter @Column(name="activo")
     private Boolean activo;
+
+    @Getter @Setter @Column(name="idevento")
+    private Long idevento;
 
     @ManyToOne
     @JoinColumn(name = "idevento", insertable = false, updatable = false)
@@ -57,9 +54,20 @@ public class Turno /* implements Serializable */ {
         this.evento = evento;
     }
 
+    @Getter @Setter @Column(name="idusuario")
+    private Long idusuario;
+
     @ManyToOne
-    @JoinColumn(name = "idusuario")
-    private Usuario usuario; //Esto devuelve JSON en lugar de idusuario
+    @JoinColumn(name = "idusuario", insertable = false, updatable = false)
+    private Usuario usuario;
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
 
     /*
     @ManyToMany(mappedBy = "turnos")

@@ -1,5 +1,8 @@
 package com.aplicacion.asistenciayturnos.dto;
 
+import com.aplicacion.asistenciayturnos.entity.Evento;
+import com.aplicacion.asistenciayturnos.entity.Organizacion;
+import com.aplicacion.asistenciayturnos.entity.Usuario;
 import lombok.*;
 
 import java.io.Serializable;
@@ -13,19 +16,16 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrganizacionEventoTurnoDto extends OrganizacionEventoDto implements Serializable {
-    @Getter @Setter
-    private String codigo;
+public class TurnoDto implements Serializable {
     @Getter @Setter
     private Date fecha;
     @Getter @Setter
     private Time hora;
     @Getter @Setter
-    private Boolean activo;
+    private String organizacion;
     @Getter @Setter
-    private EventoDto evento;
+    private String evento;
     @Getter @Setter
-    private OrganizacionDto organizacion;
-    @Getter @Setter
-    private List<UsuarioDto> usuarios;
+    private String usuario;
+
 }

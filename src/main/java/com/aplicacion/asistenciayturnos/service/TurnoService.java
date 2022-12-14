@@ -18,8 +18,8 @@ public interface TurnoService {
 
     void delete(Long turnoId);
 
-    //List<Turno> findByIdevento(Long idEvento);
+    List<Turno> findByEventoIdevento(Long idEvento);
 
-    //List<Turno> findByIdorganizacionAndIdevento(Long idOrganizacion, Long idEvento);
+    List<Turno> findByEventoIdeventoAndEventoOrganizacionIdorganizacion(Long idEvento, Long idOrganizacion);
 
 }

@@ -1,12 +1,14 @@
 package com.aplicacion.asistenciayturnos.controller;
 
-import com.aplicacion.asistenciayturnos.entity.Organizacion;
+import com.aplicacion.asistenciayturnos.converter.Converters;
+import com.aplicacion.asistenciayturnos.dto.TurnoDto;
 import com.aplicacion.asistenciayturnos.entity.Turno;
 
 import com.aplicacion.asistenciayturnos.service.TurnoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 //Indiciamos que es un controlador rest
@@ -27,9 +29,20 @@ public class Turnocontroller {
     //@GetMapping("/turnos")
     //V2
     @RequestMapping(value = "/turnos", method = RequestMethod.GET)
-    public List<Turno> findAll(){
+    public List<TurnoDto> findAll(){
+
+        List<Turno> listaTurnos = turnoService.findAll();
+        List<TurnoDto> listaTurnosDto = new ArrayList<>();
+
+        for (Turno turno:listaTurnos){
+
+            TurnoDto turnoDto = Converters.mapToTurnoDto(turno);
+            listaTurnosDto.add(turnoDto);
+
+        }
+
         //retornará todos los usuarios
-        return turnoService.findAll();
+        return listaTurnosDto;
     }
 
     /*Este método se hará cuando por una petición GET (como indica la anotación) se llame a la url + el id de un usuario
@@ -40,41 +53,63 @@ public class Turnocontroller {
     //@GetMapping("/turnos/{turnoId}")
     //V2
     @RequestMapping(value = "turnos/id/{turnoId}", method = RequestMethod.GET)
-    public Turno getTurno(@PathVariable Long turnoId){
+    public TurnoDto getTurno(@PathVariable Long turnoId){
         Turno turno = turnoService.findById(turnoId);
 
         if(turno == null) {
             throw new RuntimeException("Identificador de turno no encontrado -"+turnoId);
         }
+
+        TurnoDto turnoDto = Converters.mapToTurnoDto(turno);
         //retornará el turno con id pasado en la url
-        return turno;
+        return turnoDto;
     }
 
-    /* Esto no funciona por la búsqueda...
-    @RequestMapping(value = "/turnos/buscarorganizacionyevento/{idOrganizacion}/{idEvento}", method = RequestMethod.GET)
-    public Turno getTurnosPorOrganizacionYEvento(@PathVariable(required = false) Long idOrganizacion, @PathVariable(required = false) Long idEvento){
-        List<Turno> turnos = turnoService.findByIdorganizacionAndIdevento(idOrganizacion, idEvento);
+    @RequestMapping(value = "/turnos/organizacion/{idOrganizacion}/evento/{idEvento}", method = RequestMethod.GET)
+    public List<TurnoDto> getTurnosPorOrganizacionYEvento(@PathVariable Long idEvento, @PathVariable Long idOrganizacion){
+        List<Turno> listaTurnos = turnoService.findByEventoIdeventoAndEventoOrganizacionIdorganizacion(idEvento,idOrganizacion);
 
-        if(turnos == null) {
+        if(listaTurnos == null) {
             throw new RuntimeException("Turnos por organización y evento no encontrados.");
         }
-        //retornará al usuario con cuit o nombre pasado en la url
-        return (Turno) turnos;
-    }
-    */
 
-    /*
-    @RequestMapping(value = "/turnos/evento/{idEvento}", method = RequestMethod.GET)
-    public Turno getTurnosPorEvento(@PathVariable(required = false) Long idEvento){
-        List<Turno> turnos = turnoService.findByIdevento(idEvento);
+        List<TurnoDto> listaTurnosDto = new ArrayList<>();
 
-        if(turnos == null) {
-            throw new RuntimeException("Turnos no encontrados para evento - "+idEvento);
+        for (Turno turno:listaTurnos){
+
+            TurnoDto turnoDto = Converters.mapToTurnoDto(turno);
+            listaTurnosDto.add(turnoDto);
+
         }
-        //retornará los turnos del evento pasado en la url
-        return (Turno) turnos;
+
+        //retornará al usuario con cuit o nombre pasado en la url
+        return listaTurnosDto;
     }
-    */
+
+    //Conviene configurar la búsqueda por "nombre" del evento y no por "id"
+    @RequestMapping(value = "/turnos/evento/{idEvento}", method = RequestMethod.GET)
+    public List<TurnoDto> getTurnosPorEvento(@PathVariable Long idEvento){
+        List<Turno> listaTurnos = turnoService.findByEventoIdevento(idEvento);
+
+        //if(listaTurnos == null) {
+
+            //throw new RuntimeException("Turnos no encontrados para evento - "+idEvento);
+
+        //}
+
+        List<TurnoDto> listaTurnosDto = new ArrayList<>();
+
+        for (Turno turno:listaTurnos){
+
+            TurnoDto turnoDto = Converters.mapToTurnoDto(turno);
+            listaTurnosDto.add(turnoDto);
+
+        }
+
+        //retornará los turnos del evento pasado en la url
+        return listaTurnosDto;
+    }
+
 
     /*Este método se hará cuando por una petición POST (como indica la anotación) se llame a la url
     http://127.0.0.1:8080/api/v1/turnos

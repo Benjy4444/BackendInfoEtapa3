@@ -2,9 +2,11 @@ package com.aplicacion.asistenciayturnos.converter;
 
 import com.aplicacion.asistenciayturnos.dto.EventoDto;
 import com.aplicacion.asistenciayturnos.dto.OrganizacionDto;
+import com.aplicacion.asistenciayturnos.dto.TurnoDto;
 import com.aplicacion.asistenciayturnos.dto.UsuarioDto;
 import com.aplicacion.asistenciayturnos.entity.Evento;
 import com.aplicacion.asistenciayturnos.entity.Organizacion;
+import com.aplicacion.asistenciayturnos.entity.Turno;
 import com.aplicacion.asistenciayturnos.entity.Usuario;
 
 import java.util.Optional;
@@ -73,6 +75,50 @@ public class Converters {
         usuario.setTelefono(usuarioDto.getTelefono());
         usuario.setCorreo(usuarioDto.getCorreo());
         return usuario;
+    }
+
+    public static TurnoDto mapToTurnoDto (Turno turno){
+        TurnoDto turnoDto = new TurnoDto();
+        turnoDto.setFecha(turno.getFecha());
+        turnoDto.setHora(turno.getHora());
+
+        Organizacion organizacion = turno.getEvento().getOrganizacion();
+        String nombreOrganizacion = organizacion.getNombre();
+        turnoDto.setOrganizacion(nombreOrganizacion);
+
+        Evento evento = turno.getEvento();
+        String nombreEvento = evento.getNombre();
+        turnoDto.setEvento(nombreEvento);
+
+        Usuario usuario = turno.getUsuario();
+        String nombreUsuario = usuario.getNombre();
+        String apellidoUsuario = usuario.getApellido();
+        turnoDto.setUsuario(nombreUsuario+" "+apellidoUsuario);
+
+        return turnoDto;
+    }
+
+    public static Turno mapToTurno (TurnoDto turnoDto){
+        /* Esto hay que modificar...
+        TurnoDto turnoDto = new TurnoDto();
+        turnoDto.setFecha(turno.getFecha());
+        turnoDto.setHora(turno.getHora());
+
+        Organizacion organizacion = turno.getEvento().getOrganizacion();
+        String nombreOrganizacion = organizacion.getNombre();
+        turnoDto.setOrganizacion(nombreOrganizacion);
+
+        Evento evento = turno.getEvento();
+        String nombreEvento = evento.getNombre();
+        turnoDto.setEvento(nombreEvento);
+
+        Usuario usuario = turno.getUsuario();
+        String nombreUsuario = usuario.getNombre();
+        String apellidoUsuario = usuario.getApellido();
+        turnoDto.setUsuario(nombreUsuario+" "+apellidoUsuario);
+        */
+
+        return null; //turnoDto;
     }
 
 }

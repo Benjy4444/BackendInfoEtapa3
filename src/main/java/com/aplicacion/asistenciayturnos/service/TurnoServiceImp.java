@@ -3,9 +3,6 @@ package com.aplicacion.asistenciayturnos.service;
 import java.util.List;
 import java.util.Optional;
 
-import com.aplicacion.asistenciayturnos.repository.EventoDao;
-import com.aplicacion.asistenciayturnos.service.EventoService;
-import com.aplicacion.asistenciayturnos.entity.Evento;
 import com.aplicacion.asistenciayturnos.entity.Turno;
 import com.aplicacion.asistenciayturnos.repository.TurnoDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,27 +44,21 @@ public class TurnoServiceImp implements TurnoService {
         return turnoOptional.orElse(null);
     }
 
-
-    /* Esta búsqueda no funciona... por la estructura de la tabla???
     @Override
-    public List<Turno> findByIdorganizacionAndIdevento(Long idOrganizacion, Long idEvento) {
-        List<Turno> turnos = (List<Turno>) turnoDao.findByIdorganizacionAndIdevento(idOrganizacion, idEvento);
+    public List<Turno> findByEventoIdevento(Long idEvento) {
+        List<Turno> turnos = turnoDao.findByEventoIdevento(idEvento);
         return turnos;
     }
-    */
-
-
-    //@Override
-    //public List<Turno> findByIdevento(Long idEvento) {
-        //Optional<Evento> evento = eventoDao.findById(idEvento);
-        //Long idEventoBuscar = evento.getId();
-        //List<Turno> turnos = (List<Turno>) turnoDao.findByIdevento(idEvento);
-        //return null; //turnos;
-    //}
 
     @Override
     public void delete(Long turnoId) {
         turnoDao.deleteById(turnoId);
+    }
+
+    @Override
+    public List<Turno> findByEventoIdeventoAndEventoOrganizacionIdorganizacion(Long idEvento, Long idOrganizacion) {
+        List<Turno> turnos = (List<Turno>) turnoDao.findByEventoIdeventoAndEventoOrganizacionIdorganizacion(idEvento, idOrganizacion);
+        return turnos;
     }
 
 }
