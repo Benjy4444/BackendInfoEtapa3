@@ -20,4 +20,7 @@ public interface UsuarioService {
 
     Usuario findByDniOrApellido(Long usuarioDni, String usuarioApellido);
 
+    Usuario findByDni(Long usuarioDni);
+
+    Usuario findByApellido(String usuarioApellido);
 }

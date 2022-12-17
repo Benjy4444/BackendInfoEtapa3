@@ -45,6 +45,16 @@ public class OrganizacionServiceImp implements OrganizacionService {
     }
 
     @Override
+    public Organizacion findByCuit(Long organizacionCuit) {
+        return (Organizacion) organizacionDao.findByCuit(organizacionCuit).orElse(null);
+    }
+
+    @Override
+    public Organizacion findByNombre(String organizacionNombre) {
+        return (Organizacion) organizacionDao.findByNombre(organizacionNombre).orElse(null);
+    }
+
+    @Override
     public void delete(Long organizacionId) {
         organizacionDao.deleteById(organizacionId);
     }

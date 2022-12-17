@@ -18,4 +18,5 @@ public interface EventoService {
 
     void delete(Long eventoId);
 
+    Evento findByNombre(String eventoNombre);
 }

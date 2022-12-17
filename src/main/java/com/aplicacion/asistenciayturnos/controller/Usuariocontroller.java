@@ -33,8 +33,13 @@ public class Usuariocontroller {
 
         for (Usuario usuario:listaUsuarios){
 
-            UsuarioDto usuarioDto = Converters.mapToUsuarioDto(usuario);
-            listaUsuariosDto.add(usuarioDto);
+            //Aquí filtra para mostrar solamente los usuarios activos
+            if (usuario.getActivo()== true){
+                UsuarioDto usuarioDto = Converters.mapToUsuarioDto(usuario);
+                listaUsuariosDto.add(usuarioDto);
+            }else{
+                //Aquí va el mesaje de error por si no hay usuarios para incorporar a la lista
+            }
 
         }
         //retornará todos los usuarios
@@ -44,6 +49,8 @@ public class Usuariocontroller {
     /*Este método se hará cuando por una petición GET (como indica la anotación) se llame a la url + el id de un usuario
     http://127.0.0.1:8080/api/v1/usuarios/id/1 */
 
+    /*
+    //Esto no se pide en la consigna
     @RequestMapping(value = "/usuarios/id/{usuarioId}", method = RequestMethod.GET)
     public UsuarioDto getUsuario(@PathVariable Long usuarioId){
         Usuario usuario = usuarioService.findById(usuarioId);
@@ -56,75 +63,116 @@ public class Usuariocontroller {
         //retornará al usuario con id pasado en la url
         return usuarioDto;
     }
+    */
 
-    @RequestMapping(value = "/usuarios/dni/{usuarioDni}", method = RequestMethod.GET)
-    public UsuarioDto getUsuarioDni(@PathVariable(required = false) Long usuarioDni, @PathVariable(required = false) String usuarioApellido){
-        Usuario usuario = usuarioService.findByDniOrApellido(usuarioDni, usuarioApellido);
+    @RequestMapping(value = "/usuarios/{usuarioDni}", method = RequestMethod.GET)
+    public UsuarioDto getUsuarioDni(@PathVariable Long usuarioDni){
+        Usuario usuario = usuarioService.findByDni(usuarioDni);
 
         if(usuario == null) {
             throw new RuntimeException("Dni de usuario no encontrado -"+usuarioDni);
         }
 
-        UsuarioDto usuarioDto = Converters.mapToUsuarioDto(usuario);
-        //retornará al usuario con dni pasado en la url
-        return usuarioDto;
+        if(usuario.getActivo()==true){
+            UsuarioDto usuarioDto = Converters.mapToUsuarioDto(usuario);
+            //retornará al usuario con dni pasado en la url
+            return usuarioDto;
+        } else{
+            //Aquí va el mensaje de error por si no se encuentra ningún usuario activo con el dni pasado
+            return null;
+        }
     }
 
-    @RequestMapping(value = "/usuarios/apellido/{usuarioApellido}", method = RequestMethod.GET)
-    public UsuarioDto getUsuarioApellido(@PathVariable(required = false) Long usuarioDni, @PathVariable(required = false) String usuarioApellido){
-        Usuario usuario = usuarioService.findByDniOrApellido(usuarioDni, usuarioApellido);
+    @RequestMapping(value = "/usuarios{usuarioApellido}", method = RequestMethod.GET)
+    public UsuarioDto getUsuarioApellido(@PathVariable String usuarioApellido){
+        Usuario usuario = usuarioService.findByApellido(usuarioApellido);
 
         if(usuario == null) {
             throw new RuntimeException("Apellido de usuario no encontrado -"+usuarioApellido);
         }
 
-        UsuarioDto usuarioDto = Converters.mapToUsuarioDto(usuario);
-        //retornará al usuario con apellido pasado en la url
-        return usuarioDto;
+        if (usuario.getActivo()==true) {
+            UsuarioDto usuarioDto = Converters.mapToUsuarioDto(usuario);
+            //retornará al usuario con apellido pasado en la url
+            return usuarioDto;
+        } else {
+            //Aquí va el mesaje de error si no se encuentra ningún usuario activo con el apellido pasado
+            return null;
+        }
     }
 
     /*Este método se hará cuando por una petición POST (como indica la anotación) se llame a la url
     http://127.0.0.1:8080/api/v1/usuarios */
 
     @RequestMapping(value = "/usuarios", method = RequestMethod.POST)
-    public Usuario addUsuario(@RequestBody Usuario usuario) {
+    public UsuarioDto addUsuario(@RequestBody Usuario usuario) {
         //Esto setea el id en 0 del usuario a crear para que se siga la cuenta automática del id
         usuario.setIdusuario(0L);
+        usuario.setActivo(true);
 
         //Este método guardará al usuario enviado
         usuarioService.create(usuario);
 
-        return usuario;
+        UsuarioDto usuarioDto = Converters.mapToUsuarioDto(usuario);
+
+        return usuarioDto;
 
     }
+
     /*Este método se hará cuando por una petición PUT (como indica la anotación) se llame a la url
     http://127.0.0.1:8080/api/v1/usuarios */
 
     @RequestMapping(value = "/usuarios", method = RequestMethod.PUT)
     public Usuario updateUsuario(@RequestBody Usuario usuario) {
 
-        //este método actualizará al usuario enviado
-        usuarioService.update(usuario);
+        //Esto emula el ingreso de la clave por parte del usuario para modificar organización
+        String claveIngresada = usuario.getClave();
 
-        return usuario;
+        if (claveIngresada==usuario.getClave()) {
+
+            //este método actualizará al usuario enviado
+            usuarioService.update(usuario);
+
+            return usuario;
+        }else{
+
+            //Aquí va mensaje de error si no se ingresó la clave correctamente
+            return null;
+
+        }
     }
 
     /*Este método se hará cuando por una petición DELETE (como indica la anotación) se llame a la url + id del usuario
     http://127.0.0.1:8080/api/v1/usuarios/1 */
 
-    @RequestMapping(value = "/usuarios/{usuarioId}", method = RequestMethod.DELETE)
-    public String deleteUsuario(@PathVariable Long usuarioId) {
+    @RequestMapping(value = "/usuarios/{usuarioDni}", method = RequestMethod.DELETE)
+    public String deleteUsuario(@PathVariable Long usuarioDni) {
 
-        Usuario usuario = usuarioService.findById(usuarioId);
+        Usuario usuario = usuarioService.findByDni(usuarioDni);
 
         if(usuario == null) {
-            throw new RuntimeException("Identificador de usuario no encontrado -"+usuarioId);
+            throw new RuntimeException("Dni de usuario no encontrado -"+usuarioDni);
         }
 
-        //Esto método, recibira el id de un usuario por URL y se borrará de la bd.
-        usuarioService.delete(usuarioId);
+        //Esto que sigue emula el ingreso por parte del usuario de la clave para borrar
+        String claveIngresada = usuario.getClave();
 
-        return "Identificador de usuario borrado - "+usuarioId;
+        if (claveIngresada == usuario.getClave()) {
+
+            //Lo que sigue hace el borrado lógico, o sea cambia el estado de del campo activo de true a false,
+            //y después no se la va a mostrar a la organizacion en las búsquedas pero queda en la base de datos
+            usuario.setActivo(false);
+            usuarioService.update(usuario);
+
+            //Esto método, recibira el id de un usuario por URL y se borrará de la bd.
+            //usuarioService.delete(usuarioId);
+
+            return "Dni de usuario borrado - "+usuarioDni;
+        } else {
+
+            //Aquí va mensaje de error si no se ingresó la clave correctamente
+            return null;
+
+        }
     }
-
 }

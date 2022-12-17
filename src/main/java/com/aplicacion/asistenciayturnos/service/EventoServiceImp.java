@@ -45,4 +45,9 @@ public class EventoServiceImp implements EventoService {
         eventoDao.deleteById(eventoId);
     }
 
+    @Override
+    public Evento findByNombre(String eventoNombre) {
+        Optional<Evento> eventoOptional = eventoDao.findByNombre(eventoNombre);
+        return eventoOptional.orElse(null);
+    }
 }

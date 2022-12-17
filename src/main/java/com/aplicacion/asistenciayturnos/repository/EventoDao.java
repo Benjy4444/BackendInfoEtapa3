@@ -6,8 +6,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Transactional
 public interface EventoDao extends JpaRepository<Evento, Long> {
 
+    Optional<Evento> findByNombre(String eventoNombre);
 }

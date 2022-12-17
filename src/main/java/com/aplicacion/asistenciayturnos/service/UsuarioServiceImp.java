@@ -48,6 +48,18 @@ public class UsuarioServiceImp implements UsuarioService {
     }
 
     @Override
+    public Usuario findByDni(Long usuarioDni) {
+        Optional<Usuario> usuarioOptional = usuarioDao.findByDni(usuarioDni);
+        return usuarioOptional.orElse(null);
+    }
+
+    @Override
+    public Usuario findByApellido(String usuarioApellido) {
+        Optional<Usuario> usuarioOptional = usuarioDao.findByApellido(usuarioApellido);
+        return usuarioOptional.orElse(null);
+    }
+
+    @Override
     public void delete(Long usuarioId) {
         usuarioDao.deleteById(usuarioId);
     }

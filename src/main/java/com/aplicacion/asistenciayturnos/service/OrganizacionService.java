@@ -20,4 +20,8 @@ public interface OrganizacionService {
     void delete(Long organizacionId);
 
     Organizacion findByCuitOrNombre(Long organizacionCuit, String organizacionNombre);
+
+    Organizacion findByCuit(Long organizacionCuit);
+
+    Organizacion findByNombre(String organizacionNombre);
 }
