@@ -149,22 +149,31 @@ public class Organizacioncontroller {
     http://127.0.0.1:8080/api/v1/organizaciones
     */
 
-    @RequestMapping(value = "/organizaciones", method = RequestMethod.PUT)
-    public Organizacion updateOrganizacion(@RequestBody Organizacion organizacion) {
+    @RequestMapping(value = "/organizaciones/cuit/{organizacionCuit}/clave/{claveIngresada}", method = RequestMethod.PUT)
+    public OrganizacionDto updateOrganizacion(@PathVariable Long organizacionCuit, @PathVariable String claveIngresada, @RequestBody OrganizacionDto organizacionDto) {
 
         //Esto emula el ingreso de la clave por parte del usuario para modificar organización
-        String claveIngresada = organizacion.getClave();
+        //String claveIngresada = organizacion.getClave();
+        Organizacion organizacion = organizacionService.findByCuit(organizacionCuit);
 
-        if (claveIngresada == organizacion.getClave()) {
+        if (claveIngresada.equals(organizacion.getClave())) {
 
             //este método actualizará al usuario enviado
-            organizacionService.update(organizacion);
+            Organizacion organizacionModificada = Converters.mapToOrganizacion(organizacionDto);
+            organizacionModificada.setIdorganizacion(organizacion.getIdorganizacion());
+            organizacionModificada.setCuit(organizacionDto.getCuit());
+            organizacionModificada.setActivo(organizacion.getActivo());
+            organizacionModificada.setAlta(organizacion.getAlta());
+            organizacionModificada.setClave(organizacion.getClave());
 
-            return organizacion;
+            organizacionService.update(organizacionModificada);
+
+            return organizacionDto;
         } else {
 
             //Aquí va mensaje de error si no se ingresó la clave correctamente
-            return null;
+            throw new RuntimeException("Clave incorrecta - Organización no modificada.");
+            //return null;
 
         }
     }
@@ -173,8 +182,8 @@ public class Organizacioncontroller {
     http://127.0.0.1:8080/api/v1/organizaciones/1
     */
 
-    @RequestMapping(value = "/organizaciones/{organizacionCuit}", method = RequestMethod.DELETE)
-    public String deleteOrganizacion(@PathVariable Long organizacionCuit) {
+    @RequestMapping(value = "/organizaciones/cuit/{organizacionCuit}/clave/{claveIngresada}", method = RequestMethod.DELETE)
+    public String deleteOrganizacion(@PathVariable Long organizacionCuit, @PathVariable String claveIngresada) {
 
         Organizacion organizacion = organizacionService.findByCuit(organizacionCuit);
 
@@ -182,10 +191,9 @@ public class Organizacioncontroller {
             throw new RuntimeException("Cuit de organización no encontrado -"+organizacionCuit);
         }
 
-        //Esto que sigue emula el ingreso por parte del usuario de la clave para borrar
-        String claveIngresada = organizacion.getClave();
+        String claveOrganizacion = organizacion.getClave();
 
-        if (claveIngresada == organizacion.getClave()) {
+        if (claveIngresada.equals(claveOrganizacion)) {
 
              //Lo que sigue hace el borrado lógico, o sea cambia el estado de del campo activo de true a false,
              //y después no se la va a mostrar a la organizacion en las búsquedas pero queda en la base de datos
@@ -196,7 +204,8 @@ public class Organizacioncontroller {
         } else {
 
              //Aquí va mensaje de error si no se ingresó la clave correctamente
-             return null;
+             throw new RuntimeException("Clave incorrecta - No se realizó el borrado.");
+             //return null;
 
         }
 

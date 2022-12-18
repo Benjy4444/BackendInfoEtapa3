@@ -84,18 +84,28 @@ public class Eventocontroller {
     http://127.0.0.1:8080/api/v1/eventos
     */
 
-    @RequestMapping(value = "/eventos", method = RequestMethod.PUT)
-    public EventoDto updateEvento(@RequestBody Evento evento) {
+    @RequestMapping(value = "/eventos/nombre/{eventoNombre}/clave/{claveIngresada}", method = RequestMethod.PUT)
+    public EventoDto updateEvento(@PathVariable String eventoNombre, @PathVariable String claveIngresada, @RequestBody EventoDto eventoDto) {
 
+        Evento evento = eventoService.findByNombre(eventoNombre);
         Organizacion organizacionEvento = evento.getOrganizacion();
         String claveOrganizacion = organizacionEvento.getClave();
 
-        if(claveOrganizacion==organizacionEvento.getClave()) {
+        if(claveIngresada.equals(claveOrganizacion)) {
+            Evento eventoModificado = Converters.mapToEvento(eventoDto);
+            eventoModificado.setIdevento(evento.getIdevento());
+            //eventoModificado.getOrganizacion().setNombre(eventoModificado.getOrganizacion().getNombre());
+            //eventoModificado.setFecha(evento.getFecha());
+            //eventoModificado.setHora(evento.getHora());
+            //eventoModificado.setNombre(evento.getNombre());
+            //eventoModificado.setFecha(evento.getFecha());
+            //eventoModificado.setActivo(eventoModificado.getActivo());
+            //eventoModificado.setTipo(eventoModificado.getTipo());
 
             //este método actualizará al usuario enviado
-            eventoService.update(evento);
+            eventoService.update(eventoModificado);
 
-            EventoDto eventoDto = Converters.mapToEventoDto(evento);
+            //EventoDto eventoModificadoDto = Converters.mapToEventoDto(eventoModificado);
 
             return eventoDto;
 
@@ -112,8 +122,8 @@ public class Eventocontroller {
     http://127.0.0.1:8080/api/v1/eventos/1
     */
 
-    @RequestMapping(value = "eventos/{eventoNombre}", method = RequestMethod.DELETE)
-    public String deleteEvento(@PathVariable String eventoNombre) {
+    @RequestMapping(value = "eventos/nombre/{eventoNombre}/clave/{claveIngresada}", method = RequestMethod.DELETE)
+    public String deleteEvento(@PathVariable String eventoNombre, @PathVariable String claveIngresada) {
 
         Evento evento = eventoService.findByNombre(eventoNombre);
 
@@ -124,7 +134,7 @@ public class Eventocontroller {
         Organizacion organizacionEvento = evento.getOrganizacion();
         String claveOrganizacion = organizacionEvento.getClave();
 
-        if(claveOrganizacion==organizacionEvento.getClave()) {
+        if(claveIngresada.equals(claveOrganizacion)) {
 
             //Esto método, recibira el id de un usuario por URL y se borrará de la bd.
             //eventoService.delete(eventoId);
@@ -139,7 +149,8 @@ public class Eventocontroller {
         }else{
 
             //Aquí va el mensaje si la contraseña ingresada es incorrecta
-            return null;
+            throw new RuntimeException("Clave incorrecta - Evento no borrado.");
+            //return null;
 
         }
 

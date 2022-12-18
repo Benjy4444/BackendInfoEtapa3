@@ -145,8 +145,8 @@ public class Usuariocontroller {
     /*Este método se hará cuando por una petición DELETE (como indica la anotación) se llame a la url + id del usuario
     http://127.0.0.1:8080/api/v1/usuarios/1 */
 
-    @RequestMapping(value = "/usuarios/{usuarioDni}", method = RequestMethod.DELETE)
-    public String deleteUsuario(@PathVariable Long usuarioDni) {
+    @RequestMapping(value = "/usuarios/dni/{usuarioDni}/clave/{claveIngresada}", method = RequestMethod.DELETE)
+    public String deleteUsuario(@PathVariable Long usuarioDni, @PathVariable String claveIngresada) {
 
         Usuario usuario = usuarioService.findByDni(usuarioDni);
 
@@ -155,9 +155,9 @@ public class Usuariocontroller {
         }
 
         //Esto que sigue emula el ingreso por parte del usuario de la clave para borrar
-        String claveIngresada = usuario.getClave();
+        //String claveIngresada = usuario.getClave();
 
-        if (claveIngresada == usuario.getClave()) {
+        if (claveIngresada.equals(usuario.getClave())) {
 
             //Lo que sigue hace el borrado lógico, o sea cambia el estado de del campo activo de true a false,
             //y después no se la va a mostrar a la organizacion en las búsquedas pero queda en la base de datos
@@ -171,7 +171,8 @@ public class Usuariocontroller {
         } else {
 
             //Aquí va mensaje de error si no se ingresó la clave correctamente
-            return null;
+            throw new RuntimeException("Clave incorrecta - Usuario no borrado.");
+            //return null;
 
         }
     }

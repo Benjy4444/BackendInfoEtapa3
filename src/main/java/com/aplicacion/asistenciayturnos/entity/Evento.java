@@ -46,6 +46,8 @@ public class Evento /* implements Serializable */ {
     @Getter @Setter @Column(name="activo")
     private Boolean activo;
 
+    //Aquí el 0 representa un evento en el que se confirma asistencia, o sea el horario del evento es único, el ususario no elige.
+    //En cambio el un representa un evento en el que los usuarios sacan turno y deben ingresar un horario para ser atendidos
     @Getter @Setter @Column(name="tipo")
     private Boolean tipo;
 

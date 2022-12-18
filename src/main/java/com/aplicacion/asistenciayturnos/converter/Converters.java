@@ -39,6 +39,7 @@ public class Converters {
         eventoDto.setFecha(evento.getFecha());
         eventoDto.setHora(evento.getHora());
         eventoDto.setUbicacion(evento.getUbicacion());
+        eventoDto.setTipo(evento.getTipo());
         Organizacion organizacion = evento.getOrganizacion();
         String nombreOrganizacion = organizacion.getNombre();
         eventoDto.setOrganizacion(nombreOrganizacion);
@@ -51,6 +52,7 @@ public class Converters {
         evento.setFecha(eventoDto.getFecha());
         evento.setHora(eventoDto.getHora());
         evento.setUbicacion(eventoDto.getUbicacion());
+        evento.setTipo(eventoDto.getTipo());
         //evento.setOrganizacion(eventoDto.getOrganizacion());
         return evento;
     }
@@ -99,26 +101,24 @@ public class Converters {
     }
 
     public static Turno mapToTurno (TurnoDto turnoDto){
-        /* Esto hay que modificar...
-        TurnoDto turnoDto = new TurnoDto();
-        turnoDto.setFecha(turno.getFecha());
-        turnoDto.setHora(turno.getHora());
 
-        Organizacion organizacion = turno.getEvento().getOrganizacion();
-        String nombreOrganizacion = organizacion.getNombre();
-        turnoDto.setOrganizacion(nombreOrganizacion);
+        Turno turno = new Turno();
+        turno.setFecha(turnoDto.getFecha());
+        turno.setHora(turnoDto.getHora());
 
         Evento evento = turno.getEvento();
-        String nombreEvento = evento.getNombre();
-        turnoDto.setEvento(nombreEvento);
+        Long idEvento = evento.getIdevento();
+        turno.setIdevento(idEvento);
+
+        Organizacion organizacion = turno.getEvento().getOrganizacion();
+        Long idOrganizacion = organizacion.getIdorganizacion();
+        evento.getOrganizacion().setIdorganizacion(idOrganizacion);
 
         Usuario usuario = turno.getUsuario();
-        String nombreUsuario = usuario.getNombre();
-        String apellidoUsuario = usuario.getApellido();
-        turnoDto.setUsuario(nombreUsuario+" "+apellidoUsuario);
-        */
+        Long idUsuario = usuario.getIdusuario();
+        turno.setIdusuario(idUsuario);
 
-        return null; //turnoDto;
+        return turno;
     }
 
 }

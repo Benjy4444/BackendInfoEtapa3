@@ -3,6 +3,7 @@ package com.aplicacion.asistenciayturnos.dto;
 import com.aplicacion.asistenciayturnos.entity.Organizacion;
 import lombok.*;
 
+import javax.persistence.Column;
 import java.io.Serializable;
 import java.sql.Time;
 import java.util.Date;
@@ -24,6 +25,9 @@ public class EventoDto implements Serializable {
     private String ubicacion;
     @Getter @Setter
     private String organizacion;
+    @Getter @Setter
+    private Boolean tipo;
+
 
 
 
