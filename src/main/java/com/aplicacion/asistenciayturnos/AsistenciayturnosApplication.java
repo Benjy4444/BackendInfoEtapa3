@@ -15,6 +15,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
+import java.text.SimpleDateFormat;
+
 @SpringBootApplication
 @ComponentScan("com.aplicacion.asistenciayturnos")
 public class AsistenciayturnosApplication {
@@ -22,5 +24,7 @@ public class AsistenciayturnosApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(AsistenciayturnosApplication.class, args);
 	}
+
+	//SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
 }

@@ -88,10 +88,18 @@ public class Eventocontroller {
     public EventoDto updateEvento(@PathVariable String eventoNombre, @PathVariable String claveIngresada, @RequestBody EventoDto eventoDto) {
 
         Evento evento = eventoService.findByNombre(eventoNombre);
+
+        if(evento == null) {
+            throw new RuntimeException("Nombre de evento no encontrado -"+eventoNombre);
+        }
+
         Organizacion organizacionEvento = evento.getOrganizacion();
         String claveOrganizacion = organizacionEvento.getClave();
 
         if(claveIngresada.equals(claveOrganizacion)) {
+
+            //Esto no funciona... tira error relacionado con hora... ver si queda tiempo...
+
             Evento eventoModificado = Converters.mapToEvento(eventoDto);
             eventoModificado.setIdevento(evento.getIdevento());
             //eventoModificado.getOrganizacion().setNombre(eventoModificado.getOrganizacion().getNombre());
@@ -112,7 +120,8 @@ public class Eventocontroller {
         }else{
 
             //Aquí va el mensaje si la contraseña ingresada es incorrecta
-            return null;
+            throw new RuntimeException("Clave incorrecta - Evento no modificado.");
+            //return null;
 
         }
 

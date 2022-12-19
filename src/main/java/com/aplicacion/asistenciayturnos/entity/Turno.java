@@ -1,6 +1,7 @@
 package com.aplicacion.asistenciayturnos.entity;
 
 import java.sql.Time;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -34,7 +35,7 @@ public class Turno /* implements Serializable */ {
     private Date fecha;
 
     @Getter @Setter @Column(name="hora")
-    private Time hora;
+    private LocalTime hora;
 
     @Getter @Setter @Column(name="activo")
     private Boolean activo;

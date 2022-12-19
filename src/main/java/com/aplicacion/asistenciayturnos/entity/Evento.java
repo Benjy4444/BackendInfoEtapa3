@@ -1,6 +1,7 @@
 package com.aplicacion.asistenciayturnos.entity;
 
 import java.sql.Time;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.Set;
 
@@ -38,7 +39,7 @@ public class Evento /* implements Serializable */ {
     private Date fecha;
 
     @Getter @Setter @Column(name="hora")
-    private Time hora;
+    private LocalTime hora;
 
     @Getter @Setter @Column(name="ubicacion")
     private String ubicacion;

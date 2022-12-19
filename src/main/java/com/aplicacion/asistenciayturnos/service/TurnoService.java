@@ -22,4 +22,9 @@ public interface TurnoService {
 
     List<Turno> findByEventoIdeventoAndEventoOrganizacionIdorganizacion(Long idEvento, Long idOrganizacion);
 
+    Turno findByCodigo(String turnoCodigo);
+
+    List<Turno> findByEventoNombreAndEventoOrganizacionCuit(String nombreEvento, Long cuitOrganizacion);
+
+    List<Turno> findByEventoNombre(String nombreEvento);
 }

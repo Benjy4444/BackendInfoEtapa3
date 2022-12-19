@@ -4,9 +4,11 @@ import com.aplicacion.asistenciayturnos.entity.Evento;
 import com.aplicacion.asistenciayturnos.entity.Organizacion;
 import com.aplicacion.asistenciayturnos.entity.Usuario;
 import lombok.*;
+import net.bytebuddy.asm.Advice;
 
 import java.io.Serializable;
 import java.sql.Time;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +22,7 @@ public class TurnoDto implements Serializable {
     @Getter @Setter
     private Date fecha;
     @Getter @Setter
-    private Time hora;
+    private LocalTime hora;
     @Getter @Setter
     private String organizacion;
     @Getter @Setter

@@ -61,4 +61,22 @@ public class TurnoServiceImp implements TurnoService {
         return turnos;
     }
 
+    @Override
+    public Turno findByCodigo(String turnoCodigo) {
+        Turno turno = turnoDao.findByCodigo(turnoCodigo);
+        return turno;
+    }
+
+    @Override
+    public List<Turno> findByEventoNombreAndEventoOrganizacionCuit(String nombreEvento, Long cuitOrganizacion) {
+        List<Turno> turnos = (List<Turno>) turnoDao.findByEventoNombreAndEventoOrganizacionCuit(nombreEvento, cuitOrganizacion);
+        return turnos;
+    }
+
+    @Override
+    public List<Turno> findByEventoNombre(String nombreEvento) {
+        Turno turno = turnoDao.findByEventoNombre(nombreEvento);
+        return (List<Turno>) turno;
+    }
+
 }

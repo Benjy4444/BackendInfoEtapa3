@@ -6,6 +6,7 @@ import lombok.*;
 import javax.persistence.Column;
 import java.io.Serializable;
 import java.sql.Time;
+import java.time.LocalTime;
 import java.util.Date;
 
 /**
@@ -20,7 +21,7 @@ public class EventoDto implements Serializable {
     @Getter @Setter
     private Date fecha;
     @Getter @Setter
-    private Time hora;
+    private LocalTime hora;
     @Getter @Setter
     private String ubicacion;
     @Getter @Setter

@@ -15,4 +15,10 @@ public interface TurnoDao extends JpaRepository<Turno, Long> {
     List<Turno> findByEventoIdevento(Long idEvento);
 
     List<Turno> findByEventoIdeventoAndEventoOrganizacionIdorganizacion(Long idEvento, Long idOrganizacion);
+
+    Turno findByCodigo(String turnoCodigo);
+
+    Object findByEventoNombreAndEventoOrganizacionCuit(String nombreEvento, Long cuitOrganizacion);
+
+    Turno findByEventoNombre(String nombreEvento);
 }

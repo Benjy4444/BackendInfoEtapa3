@@ -122,22 +122,33 @@ public class Usuariocontroller {
     /*Este método se hará cuando por una petición PUT (como indica la anotación) se llame a la url
     http://127.0.0.1:8080/api/v1/usuarios */
 
-    @RequestMapping(value = "/usuarios", method = RequestMethod.PUT)
-    public Usuario updateUsuario(@RequestBody Usuario usuario) {
+    @RequestMapping(value = "/usuarios/dni/{usuarioDni}/clave/{claveIngresada}", method = RequestMethod.PUT)
+    public UsuarioDto updateUsuario(@PathVariable Long usuarioDni, @PathVariable String claveIngresada, @RequestBody UsuarioDto usuarioDto) {
 
         //Esto emula el ingreso de la clave por parte del usuario para modificar organización
-        String claveIngresada = usuario.getClave();
+        //String claveIngresada = usuario.getClave();
+        Usuario usuario = usuarioService.findByDni(usuarioDni);
 
-        if (claveIngresada==usuario.getClave()) {
+        if(usuario == null) {
+            throw new RuntimeException("Dni de usuario no encontrado -"+usuarioDni);
+        }
+
+        if (claveIngresada.equals(usuario.getClave())) {
+
+            Usuario usuarioModificado = Converters.mapToUsuario(usuarioDto);
+            usuarioModificado.setIdusuario(usuario.getIdusuario());
+            usuarioModificado.setActivo(usuario.getActivo());
+            usuarioModificado.setClave(usuario.getClave());
 
             //este método actualizará al usuario enviado
-            usuarioService.update(usuario);
+            usuarioService.update(usuarioModificado);
 
-            return usuario;
+            return usuarioDto;
         }else{
 
             //Aquí va mensaje de error si no se ingresó la clave correctamente
-            return null;
+            throw new RuntimeException("Clave incorrecta - Usuario no modificado.");
+            //return null;
 
         }
     }
